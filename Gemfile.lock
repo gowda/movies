@@ -104,6 +104,10 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.14.0)
       parser (>= 3.0.1.1)
+    rubocop-rails (2.12.4)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -155,6 +159,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   railties (~> 6.1.0)
   rubocop (~> 1.23.0)
+  rubocop-rails
   sass-rails (>= 6)
   spring
   sprockets-rails (>= 2.0.0)
