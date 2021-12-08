@@ -1,0 +1,16 @@
+AllCops:
+  NewCops: disable
+  Exclude:
+    - '.git/**/*'
+    - 'bin/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'db/schema.rb'
+Layout/LineLength:
+  IgnoredPatterns: ['\A\s*#']
+Style/Documentation:
+  Enabled: false
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+Bundler/OrderedGems:
+  Enabled: false

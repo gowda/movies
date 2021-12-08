@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -21,7 +23,8 @@ gem 'sass-rails', '>= 6'
 gem 'jbuilder', '~> 2.7'
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'rubocop', '~> 1.23.0', require: false
 end
 
 group :development do
@@ -30,4 +33,3 @@ group :development do
   gem 'listen', '~> 3.3'
   gem 'spring'
 end
-
