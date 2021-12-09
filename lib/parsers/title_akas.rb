@@ -14,10 +14,18 @@ module Parsers
       'isOriginalTitle' => 'original'
     }.freeze
 
+    def before_call
+      ActiveRecord::Base.connection.remove_index :alternate_titles, :imdb_id
+    end
+
     def insert_rows!(rows)
       ActiveRecord::Base.connection.disable_referential_integrity do
         AlternateTitle.insert_all!(rows.map(&:to_h))
       end
+    end
+
+    def after_call
+      ActiveRecord::Base.connection.add_index :alternate_titles, :imdb_id, if_not_exists: true
     end
 
     def name
