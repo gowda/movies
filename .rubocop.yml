@@ -17,3 +17,6 @@ Style/EmptyMethod:
   EnforcedStyle: expanded
 Bundler/OrderedGems:
   Enabled: false
+Rails/SkipsModelValidations:
+  Exclude:
+    - lib/parsers/**/*.rb
