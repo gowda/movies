@@ -12,8 +12,16 @@ namespace :import do
     downloader.unzip
   end
 
+  desc 'download title.name.tsv.gz'
+  task download_name_basics: :environment do
+    downloader = Downloader.new('name.basics')
+
+    downloader.call
+    downloader.unzip
+  end
+
   desc 'download all datasets'
-  task download: :download_title_basics
+  task download: %i[download_title_basics download_name_basics]
 
   desc 'parse and load title.basics.tsv'
   task parse_and_load_title_basics: :download_title_basics do
@@ -30,8 +38,23 @@ namespace :import do
     Parsers::TitleBasics.new.call
   end
 
+  desc 'parse and load name.basics.tsv'
+  task parse_and_load_name_basics: :download_name_basics do
+    in_file = `wc -l #{Rails.root.join('tmp/name.basics.tsv')}`.split.first.to_i - 1
+    in_db = Artist.count
+
+    if in_file == in_db
+      puts 'Skipping name.basics.tsv'
+      next
+    end
+
+    puts 'Processing name.basics.tsv'
+    ActiveRecord::Base.logger = nil
+    Parsers::NameBasics.new.call
+  end
+
   desc 'parse and load base datasets'
-  task parse_and_load_base: :parse_and_load_title_basics
+  task parse_and_load_base: %i[parse_and_load_title_basics parse_and_load_name_basics]
 
   desc 'parse and load all datasets'
   task parse_and_load: :parse_and_load_base

@@ -20,3 +20,6 @@ Bundler/OrderedGems:
 Rails/SkipsModelValidations:
   Exclude:
     - lib/parsers/**/*.rb
+Metrics/BlockLength:
+  Exclude:
+    - lib/tasks/**/*.rake
