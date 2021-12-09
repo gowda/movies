@@ -177,5 +177,5 @@ namespace :import do
                                      parse_and_load_title_principals parse_and_load_title_ratings]
 
   desc 'parse and load all datasets'
-  task parse_and_load: %i[db:drop db:create db:migrate parse_and_load_base parse_and_load_additional]
+  task parse_and_load: %i[parse_and_load_base parse_and_load_additional]
 end
