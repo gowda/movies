@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_131500) do
+ActiveRecord::Schema.define(version: 2021_12_09_145220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "artists", force: :cascade do |t|
+    t.string "name"
+    t.string "birth_year"
+    t.string "death_year"
+    t.string "imdb_id"
+    t.string "primary_profession"
+    t.string "known_for_titles"
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["imdb_id"], name: "index_artists_on_imdb_id", unique: true
+  end
 
   create_table "titles", force: :cascade do |t|
     t.string "imdb_id"
