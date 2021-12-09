@@ -7,4 +7,5 @@ module Parsers
   require_relative 'parsers/title_crew'
   require_relative 'parsers/title_episode'
   require_relative 'parsers/title_principals'
+  require_relative 'parsers/title_ratings'
 end
