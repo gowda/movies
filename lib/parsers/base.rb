@@ -6,7 +6,7 @@ module Parsers
   class Base
     attr_accessor :index
 
-    SLICE_SIZE = 100_000
+    SLICE_SIZE = 10_000
 
     def initialize
       @index = 0
