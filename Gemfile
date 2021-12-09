@@ -17,6 +17,8 @@ gem 'railties', RAILS_VERSION
 gem 'sprockets-rails', '>= 2.0.0'
 gem 'bundler', '>= 1.15.0'
 
+gem 'faraday', '~> 1.8.0'
+
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'sass-rails', '>= 6'
