@@ -4,18 +4,34 @@ require 'csv'
 
 module Parsers
   class Base
+    attr_accessor :index
+
     SLICE_SIZE = 100_000
+
+    def initialize
+      @index = 0
+    end
 
     def call
       before_call
-      index = 0
+
       CSV.foreach(path, options).each_slice(SLICE_SIZE) do |rows|
         insert_rows!(rows)
-        index += rows.length
-        printf "\rCreating#{dots.next.ljust(5, ' ')} #{index.to_s.rjust(10, ' ')}/#{count}"
+
+        self.index += rows.length
+        print_progress
       end
 
       after_call
+      print_completion
+    end
+
+    def print_progress
+      printf "\rCreating#{dots.next.ljust(5, ' ')} #{index.to_s.rjust(10, ' ')}/#{count}"
+    end
+
+    def print_completion
+      printf "\r#{' ' * 80}"
       printf "\rCreated #{index} records\n"
     end
 
@@ -30,7 +46,7 @@ module Parsers
     end
 
     def count
-      @count ||= `wc -l #{path}`.split.first.to_i
+      @count ||= `wc -l #{path}`.split.first.to_i - 1
     end
 
     def path
