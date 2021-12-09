@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2021_12_09_131500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "titles", force: :cascade do |t|
+    t.string "imdb_id"
+    t.string "category"
+    t.string "name"
+    t.string "original_name"
+    t.boolean "adult"
+    t.string "start_year"
+    t.string "end_year"
+    t.integer "runtime_minutes"
+    t.string "genres"
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["imdb_id"], name: "index_titles_on_imdb_id", unique: true
+  end
 
 end

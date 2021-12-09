@@ -4,11 +4,11 @@ require:
 AllCops:
   NewCops: disable
   Exclude:
-    - '.git/**/*'
-    - 'bin/**/*'
-    - 'vendor/**/*'
-    - 'tmp/**/*'
-    - 'db/schema.rb'
+    - .git/**/*
+    - bin/**/*
+    - vendor/**/*
+    - tmp/**/*
+    - db/**/*.rb
 Layout/LineLength:
   IgnoredPatterns: ['\A\s*#']
 Style/Documentation:
