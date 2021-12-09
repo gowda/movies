@@ -52,9 +52,17 @@ namespace :import do
     downloader.unzip
   end
 
+  desc 'download title.ratings.tsv.gz'
+  task download_title_ratings: :environment do
+    downloader = Downloader.new('title.ratings')
+
+    downloader.call
+    downloader.unzip
+  end
+
   desc 'download all datasets'
   task download: %i[download_title_basics download_name_basics download_title_akas download_title_crew
-                    download_title_episode download_title_principals]
+                    download_title_episode download_title_principals download_title_ratings]
 
   desc 'parse and load title.basics.tsv'
   task parse_and_load_title_basics: :download_title_basics do
@@ -149,9 +157,24 @@ namespace :import do
     Parsers::TitlePrincipals.new.call
   end
 
+  desc 'parse and load title.ratings.tsv'
+  task parse_and_load_title_ratings: %i[parse_and_load_base download_title_ratings] do
+    in_file = `wc -l #{Rails.root.join('tmp/title.ratings.tsv')}`.split.first.to_i - 1
+    in_db = IMDbRating.count
+
+    if in_file == in_db
+      puts 'Skipping title.ratings.tsv'
+      next
+    end
+
+    puts 'Processing title.ratings.tsv'
+    ActiveRecord::Base.logger = nil
+    Parsers::TitleRatings.new.call
+  end
+
   desc 'parse and load additional dataset'
   task parse_and_load_additional: %i[parse_and_load_title_akas parse_and_load_title_crew parse_and_load_title_episode
-                                     parse_and_load_title_principals]
+                                     parse_and_load_title_principals parse_and_load_title_ratings]
 
   desc 'parse and load all datasets'
   task parse_and_load: %i[db:drop db:create db:migrate parse_and_load_base parse_and_load_additional]
