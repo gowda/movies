@@ -44,9 +44,17 @@ namespace :import do
     downloader.unzip
   end
 
+  desc 'download title.principals.tsv.gz'
+  task download_title_principals: :environment do
+    downloader = Downloader.new('title.principals')
+
+    downloader.call
+    downloader.unzip
+  end
+
   desc 'download all datasets'
   task download: %i[download_title_basics download_name_basics download_title_akas download_title_crew
-                    download_title_episode]
+                    download_title_episode download_title_principals]
 
   desc 'parse and load title.basics.tsv'
   task parse_and_load_title_basics: :download_title_basics do
@@ -126,8 +134,24 @@ namespace :import do
     Parsers::TitleEpisode.new.call
   end
 
+  desc 'parse and load title.principals.tsv'
+  task parse_and_load_title_principals: %i[parse_and_load_base download_title_principals] do
+    in_file = `wc -l #{Rails.root.join('tmp/title.principals.tsv')}`.split.first.to_i - 1
+    in_db = Principal.count
+
+    if in_file == in_db
+      puts 'Skipping title.principals.tsv'
+      next
+    end
+
+    puts 'Processing title.principals.tsv'
+    ActiveRecord::Base.logger = nil
+    Parsers::TitlePrincipals.new.call
+  end
+
   desc 'parse and load additional dataset'
-  task parse_and_load_additional: %i[parse_and_load_title_akas parse_and_load_title_crew parse_and_load_title_episode]
+  task parse_and_load_additional: %i[parse_and_load_title_akas parse_and_load_title_crew parse_and_load_title_episode
+                                     parse_and_load_title_principals]
 
   desc 'parse and load all datasets'
   task parse_and_load: %i[db:drop db:create db:migrate parse_and_load_base parse_and_load_additional]
