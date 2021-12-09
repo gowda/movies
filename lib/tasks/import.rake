@@ -28,8 +28,16 @@ namespace :import do
     downloader.unzip
   end
 
+  desc 'download title.crew.tsv.gz'
+  task download_title_crew: :environment do
+    downloader = Downloader.new('title.crew')
+
+    downloader.call
+    downloader.unzip
+  end
+
   desc 'download all datasets'
-  task download: %i[download_title_basics download_name_basics download_title_akas]
+  task download: %i[download_title_basics download_name_basics download_title_akas download_title_crew]
 
   desc 'parse and load title.basics.tsv'
   task parse_and_load_title_basics: :download_title_basics do
@@ -79,8 +87,23 @@ namespace :import do
     Parsers::TitleAkas.new.call
   end
 
+  desc 'parse and load title.crew.tsv'
+  task parse_and_load_title_crew: %i[parse_and_load_base download_title_crew] do
+    in_file = `wc -l #{Rails.root.join('tmp/title.crew.tsv')}`.split.first.to_i - 1
+    in_db = AlternateTitle.count
+
+    if in_file == in_db
+      puts 'Skipping title.crew.tsv'
+      next
+    end
+
+    puts 'Processing title.crew.tsv'
+    ActiveRecord::Base.logger = nil
+    Parsers::TitleCrew.new.call
+  end
+
   desc 'parse and load additional dataset'
-  task parse_and_load_additional: :parse_and_load_title_akas
+  task parse_and_load_additional: %i[parse_and_load_title_akas parse_and_load_title_crew]
 
   desc 'parse and load all datasets'
   task parse_and_load: %i[parse_and_load_base parse_and_load_additional]
