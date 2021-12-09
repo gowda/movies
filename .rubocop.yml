@@ -23,3 +23,5 @@ Rails/SkipsModelValidations:
 Metrics/BlockLength:
   Exclude:
     - lib/tasks/**/*.rake
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
