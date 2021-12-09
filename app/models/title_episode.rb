@@ -1,0 +1,2 @@
+class TitleEpisode < ApplicationRecord
+end
