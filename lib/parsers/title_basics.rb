@@ -14,7 +14,7 @@ module Parsers
     }.freeze
 
     def before_call
-      ActiveRecord::Base.connection.remove_index :titles, :imdb_id, if_not_exists: true
+      ActiveRecord::Base.connection.remove_index :titles, :imdb_id
     end
 
     def insert_rows!(rows)
