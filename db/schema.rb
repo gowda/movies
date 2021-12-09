@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_151755) do
+ActiveRecord::Schema.define(version: 2021_12_09_170212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,5 +56,16 @@ ActiveRecord::Schema.define(version: 2021_12_09_151755) do
     t.index ["imdb_id"], name: "index_titles_on_imdb_id", unique: true
   end
 
+  create_table "writings", force: :cascade do |t|
+    t.string "title_imdb_id"
+    t.string "writer_imdb_id"
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["title_imdb_id"], name: "index_writings_on_title_imdb_id"
+    t.index ["writer_imdb_id"], name: "index_writings_on_writer_imdb_id"
+  end
+
   add_foreign_key "alternate_titles", "titles", column: "imdb_id", primary_key: "imdb_id"
+  add_foreign_key "writings", "artists", column: "writer_imdb_id", primary_key: "imdb_id"
+  add_foreign_key "writings", "titles", column: "title_imdb_id", primary_key: "imdb_id"
 end
