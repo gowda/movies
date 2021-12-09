@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_145220) do
+ActiveRecord::Schema.define(version: 2021_12_09_151755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alternate_titles", force: :cascade do |t|
+    t.string "imdb_id"
+    t.integer "ordering"
+    t.string "name"
+    t.string "region"
+    t.string "language"
+    t.string "release_types"
+    t.string "imdb_attributes"
+    t.boolean "original"
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["imdb_id"], name: "index_alternate_titles_on_imdb_id"
+  end
 
   create_table "artists", force: :cascade do |t|
     t.string "name"
@@ -42,4 +56,5 @@ ActiveRecord::Schema.define(version: 2021_12_09_145220) do
     t.index ["imdb_id"], name: "index_titles_on_imdb_id", unique: true
   end
 
+  add_foreign_key "alternate_titles", "titles", column: "imdb_id", primary_key: "imdb_id"
 end
