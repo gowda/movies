@@ -16,4 +16,6 @@ class Title < ApplicationRecord
     primary_key: :imdb_id,
     inverse_of: false
   has_one :parent, class_name: 'Title', through: :parent_title, source: :title
+
+  has_many :principals, dependent: nil, foreign_key: :title_imdb_id, primary_key: :imdb_id, inverse_of: :title
 end
