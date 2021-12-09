@@ -1,0 +1,2 @@
+class Principal < ApplicationRecord
+end

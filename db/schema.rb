@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_185133) do
+ActiveRecord::Schema.define(version: 2021_12_09_194057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,19 @@ ActiveRecord::Schema.define(version: 2021_12_09_185133) do
     t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["director_imdb_id"], name: "index_directings_on_director_imdb_id"
     t.index ["title_imdb_id"], name: "index_directings_on_title_imdb_id"
+  end
+
+  create_table "principals", force: :cascade do |t|
+    t.string "title_imdb_id"
+    t.string "artist_imdb_id"
+    t.integer "ordering"
+    t.string "category"
+    t.string "job"
+    t.string "characters"
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["artist_imdb_id"], name: "index_principals_on_artist_imdb_id"
+    t.index ["title_imdb_id"], name: "index_principals_on_title_imdb_id"
   end
 
   create_table "title_episodes", force: :cascade do |t|
@@ -88,6 +101,8 @@ ActiveRecord::Schema.define(version: 2021_12_09_185133) do
   add_foreign_key "alternate_titles", "titles", column: "imdb_id", primary_key: "imdb_id"
   add_foreign_key "directings", "artists", column: "director_imdb_id", primary_key: "imdb_id"
   add_foreign_key "directings", "titles", column: "title_imdb_id", primary_key: "imdb_id"
+  add_foreign_key "principals", "artists", column: "artist_imdb_id", primary_key: "imdb_id"
+  add_foreign_key "principals", "titles", column: "title_imdb_id", primary_key: "imdb_id"
   add_foreign_key "title_episodes", "titles", column: "episode_imdb_id", primary_key: "imdb_id"
   add_foreign_key "title_episodes", "titles", column: "title_imdb_id", primary_key: "imdb_id"
   add_foreign_key "writings", "artists", column: "writer_imdb_id", primary_key: "imdb_id"
