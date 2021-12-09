@@ -14,6 +14,7 @@ module Parsers
     }.freeze
 
     def before_call
+      ActiveRecord::Base.connection.remove_foreign_key :principals, :titles
       ActiveRecord::Base.connection.remove_foreign_key :writings, :titles
       ActiveRecord::Base.connection.remove_foreign_key :directings, :titles
       ActiveRecord::Base.connection.remove_foreign_key :alternate_titles, :titles
@@ -35,6 +36,7 @@ module Parsers
 primary_key: :imdb_id
       ActiveRecord::Base.connection.add_foreign_key :title_episodes, :titles, column: :episode_imdb_id,
 primary_key: :imdb_id
+      ActiveRecord::Base.connection.add_foreign_key :principals, :titles, column: :title_imdb_id, primary_key: :imdb_id
     end
 
     def name

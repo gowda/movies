@@ -11,6 +11,7 @@ module Parsers
     }.freeze
 
     def before_call
+      ActiveRecord::Base.connection.remove_foreign_key :principals, :artists
       ActiveRecord::Base.connection.remove_foreign_key :writings, :artists
       ActiveRecord::Base.connection.remove_foreign_key :directings, :artists
       ActiveRecord::Base.connection.remove_index :artists, :imdb_id
@@ -28,6 +29,10 @@ module Parsers
         primary_key: :imdb_id
 
       ActiveRecord::Base.connection.add_foreign_key :writings, :artists, column: :writer_imdb_id, primary_key: :imdb_id
+      ActiveRecord::Base.connection.add_foreign_key :principals,
+        :artists,
+        column: :artist_imdb_id,
+        primary_key: :imdb_id
     end
 
     def name
