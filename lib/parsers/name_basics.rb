@@ -19,7 +19,7 @@ module Parsers
     end
 
     def after_call
-      ActiveRecord::Base.connection.add_index :artists, :imdb_id, if_not_exists: true
+      ActiveRecord::Base.connection.add_index :artists, :imdb_id, unique: true, if_not_exists: true
     end
 
     def name
