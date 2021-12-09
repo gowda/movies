@@ -17,6 +17,8 @@ module Parsers
       ActiveRecord::Base.connection.remove_foreign_key :writings, :titles
       ActiveRecord::Base.connection.remove_foreign_key :directings, :titles
       ActiveRecord::Base.connection.remove_foreign_key :alternate_titles, :titles
+      ActiveRecord::Base.connection.remove_foreign_key :title_episodes, :titles
+      ActiveRecord::Base.connection.remove_foreign_key :title_episodes, :titles
       ActiveRecord::Base.connection.remove_index :titles, :imdb_id
     end
 
@@ -29,6 +31,10 @@ module Parsers
       ActiveRecord::Base.connection.add_foreign_key :alternate_titles, :titles, column: :imdb_id, primary_key: :imdb_id
       ActiveRecord::Base.connection.add_foreign_key :directings, :titles, column: :title_imdb_id, primary_key: :imdb_id
       ActiveRecord::Base.connection.add_foreign_key :writings, :titles, column: :title_imdb_id, primary_key: :imdb_id
+      ActiveRecord::Base.connection.add_foreign_key :title_episodes, :titles, column: :title_imdb_id,
+primary_key: :imdb_id
+      ActiveRecord::Base.connection.add_foreign_key :title_episodes, :titles, column: :episode_imdb_id,
+primary_key: :imdb_id
     end
 
     def name
