@@ -14,8 +14,10 @@ module Parsers
     end
 
     def insert_rows!(rows)
-      insert_directings!(rows)
-      insert_writings!(rows)
+      ActiveRecord::Base.connection.disable_referential_integrity do
+        insert_directings!(rows)
+        insert_writings!(rows)
+      end
     end
 
     def insert_directings!(rows)
