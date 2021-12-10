@@ -7,21 +7,51 @@
         </div>
         <div class="col-auto">
           <% if dataset[:count].zero? %>
-            <a
-              href="#"
-              class="btn btn-dark btn-sm dataset-create"
+            <button
+              type="button"
+              class="btn btn-dark btn-sm shadow-none dataset-import"
               data-id="<%= dataset[:id] %>"
             >
               Import
-            </a>
+            </button>
+            <button
+              type="button"
+              class="btn btn-dark btn-sm shadow-none dataset-import-progress"
+              data-id="<%= dataset[:id] %>"
+              disabled
+              style="display: none;"
+            >
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              >
+              </span>
+              Importing...
+            </button>
           <% else %>
-            <a
-              href="#"
-              class="btn btn-primary btn-sm dataset-update"
+            <button
+              type="button"
+              class="btn btn-primary btn-sm shadow-none dataset-update"
               data-id="<%= dataset[:id] %>"
             >
               Update
-            </a>
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm shadow-none dataset-update-progress"
+              data-id="<%= dataset[:id] %>"
+              disabled
+              style="display: none;"
+            >
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              >
+              </span>
+              Updating...
+            </button>
           <% end %>
         </div>
       </div>
@@ -30,9 +60,61 @@
         <h5 class="card-title">
           <%= number_to_human(dataset[:count]) %>
         </h5>
-        <p class="card-text">
-          With supporting text below as a natural lead-in to additional content.
-        </p>
+        <div class="card-text">
+          <div
+            class="alert alert-success alert-dismissible fade show dataset-alert"
+            role="alert"
+            data-id="<%= dataset[:id] %>"
+            style="display: none;"
+          >
+            <span class="message"></span>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+            >
+            </button>
+          </div>
+          <div
+            class="alert alert-danger alert-dismissible fade show dataset-error"
+            role="alert"
+            data-id="<%= dataset[:id] %>"
+            style="display: none;"
+          >
+            <span class="message"></span>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+            >
+            </button>
+          </div>
+          <p>
+            With supporting text below as a natural lead-in to additional content.
+          </p>
+          <div
+            class="row align-items-center dataset-progress"
+            data-id="<%= dataset[:id] %>"
+            style="display: none;"
+          >
+            <div class="col-10">
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-striped progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="75"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 75%"
+                >
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <span class="label">75%</span>
+            </div>
+          </div>
+        </div>
       </div>
     <div class="card-footer">
       <small class="text-muted">

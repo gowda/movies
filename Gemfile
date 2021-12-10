@@ -13,6 +13,7 @@ gem 'activejob', RAILS_VERSION
 gem 'activemodel', RAILS_VERSION
 gem 'activerecord', RAILS_VERSION
 gem 'activesupport', RAILS_VERSION
+gem 'actioncable', RAILS_VERSION
 gem 'railties', RAILS_VERSION
 gem 'sprockets-rails', '>= 2.0.0'
 gem 'bundler', '>= 1.15.0'
