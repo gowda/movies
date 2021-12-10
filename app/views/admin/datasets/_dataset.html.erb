@@ -1,0 +1,43 @@
+<div class="col">
+  <div class="card h-100">
+    <div class="card-header">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+          <%= "#{dataset[:name]} (#{dataset[:source]})" %>
+        </div>
+        <div class="col-auto">
+          <% if dataset[:count].zero? %>
+            <a
+              href="#"
+              class="btn btn-dark btn-sm dataset-create"
+              data-id="<%= dataset[:id] %>"
+            >
+              Import
+            </a>
+          <% else %>
+            <a
+              href="#"
+              class="btn btn-primary btn-sm dataset-update"
+              data-id="<%= dataset[:id] %>"
+            >
+              Update
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+          <%= number_to_human(dataset[:count]) %>
+        </h5>
+        <p class="card-text">
+          With supporting text below as a natural lead-in to additional content.
+        </p>
+      </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Last updated <%= time_ago_in_words(dataset[:updated_at]) %>
+      </small>
+    </div>
+  </div>
+</div>

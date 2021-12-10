@@ -19,6 +19,9 @@ gem 'bundler', '>= 1.15.0'
 
 gem 'faraday', '~> 1.8.0'
 
+gem 'bootstrap', '~> 5.1.3'
+gem 'jquery-rails', '~> 4.4.0'
+
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'sass-rails', '>= 6'
