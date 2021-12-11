@@ -6,17 +6,24 @@ module IMDbImporter
   class Base
     SLICE_SIZE = 10_000
 
-    def self.import
-      new.call
+    attr_reader :reporter
+
+    def self.import(reporter = nil)
+      reporter = reporter.presence || ConsoleImportReporter.new
+      new(reporter).call
+    end
+
+    def initialize(reporter)
+      @reporter = reporter
     end
 
     def call
-      print_skip_message && return unless import?
+      report_skipping && return unless import?
 
       before_process
       process
       after_process
-      print_completion
+      report_completion
     end
 
     def process
@@ -24,26 +31,62 @@ module IMDbImporter
         insert_rows!(rows)
 
         dataset.increment!(:completed, rows.length, touch: true)
-        print_progress
+        report_progress
       end
     end
 
-    def print_skip_message
-      printf "Skipping #{dataset.filename}\n"
-      true
+    def report_skipping
+      return true unless reporter.present?
+
+      reporter.call({event: 'skip', message: "Skipping #{dataset.filename}\n"})
     end
 
-    def print_progress
-      printf "\rCreating#{dots.next.ljust(5, ' ')} #{completed.to_s.rjust(10, ' ')}/#{total}"
+    def report_start
+      return true unless reporter.present?
+
+      reporter.call({
+        event: 'start',
+        message: start_message,
+        total: total
+      })
     end
 
-    def print_completion
-      printf "\r#{' ' * 80}"
-      printf "\rCreated #{completed} records\n"
+    def start_message
+      "Processing #{dataset.filename}"
+    end
+
+    def report_progress
+      return true unless reporter.present?
+
+      reporter.call({
+        event: 'progress',
+        message: progress_message,
+        completed: completed,
+        total: total
+      })
+    end
+
+    def progress_message
+      "Importing#{dots.next.ljust(5, ' ')} #{completed.to_s.rjust(10, ' ')}/#{total}"
+    end
+
+    def report_completion
+      return true unless reporter.present?
+
+      reporter.call({
+        event: 'completion',
+        message: completion_message,
+        completed: completed,
+        total: total
+      })
+    end
+
+    def completion_message
+      "Created #{completed} records"
     end
 
     def before_call
-      printf "Processing #{dataset.filename}\n"
+      report_start
       ActiveRecord::Base.logger = nil
     end
     alias_method :before_process, :before_call
