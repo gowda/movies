@@ -11,15 +11,17 @@ class CableImportReporter
   def call(payload)
     ActionCable.server.broadcast(
       'admin_datasets',
-      {
-        body: {
-          id: id,
-          action: action,
-          event: payload[:event],
-          completed: payload[:completed],
-          length: payload[:total]
-        }
-      }
+      { body: transform(payload) }
     )
+  end
+
+  def transform(payload)
+    {
+      id: id,
+      action: action,
+      event: payload[:event],
+      completed: payload[:completed],
+      length: payload[:total]
+    }
   end
 end

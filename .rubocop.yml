@@ -19,7 +19,8 @@ Bundler/OrderedGems:
   Enabled: false
 Rails/SkipsModelValidations:
   Exclude:
-    - lib/parsers/**/*.rb
+    - app/services/imdb_importer.rb
+    - app/services/imdb_importer/**/*.rb
 Metrics/BlockLength:
   Exclude:
     - lib/tasks/**/*.rake

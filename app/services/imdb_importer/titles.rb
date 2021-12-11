@@ -50,7 +50,7 @@ module IMDbImporter
         column: :title_imdb_id,
         primary_key: :imdb_id
       ]
-    }
+    }.freeze
 
     def name
       'title.basics'
@@ -83,7 +83,7 @@ module IMDbImporter
     end
 
     def add_foreign_keys
-      FOREIGN_KEY_OPTIONS.keys.each do |table|
+      FOREIGN_KEY_OPTIONS.each_key do |table|
         add_foreign_keys_for(table)
       end
     end
@@ -93,7 +93,7 @@ module IMDbImporter
     end
 
     def remove_foreign_keys
-      FOREIGN_KEY_OPTIONS.keys.each do |table|
+      FOREIGN_KEY_OPTIONS.each_key do |table|
         remove_foreign_keys_for(table)
       end
     end

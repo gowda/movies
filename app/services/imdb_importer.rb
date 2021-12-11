@@ -18,7 +18,7 @@ module IMDbImporter
       'title.episode' => TitleEpisodes,
       'title.principals' => Principals,
       'title.ratings' => Ratings
-    }
+    }.freeze
 
     def import(name, reporter = nil)
       raise ArgumentError, "do not know how to import #{name}" if unknown?(name)

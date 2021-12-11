@@ -27,7 +27,7 @@ module IMDbImporter
     end
 
     def process
-      IMDbDatasetParser.new(name, path).each_slice(SLICE_SIZE) do |rows|
+      IMDbDatasetParser.new(name, path).take(total).each_slice(SLICE_SIZE) do |rows|
         insert_rows!(rows)
 
         dataset.increment!(:completed, rows.length, touch: true)
@@ -36,13 +36,13 @@ module IMDbImporter
     end
 
     def report_skipping
-      return true unless reporter.present?
+      return true if reporter.blank?
 
-      reporter.call({event: 'skip', message: "Skipping #{dataset.filename}\n"})
+      reporter.call({ event: 'skip', message: "Skipping #{dataset.filename}\n" })
     end
 
     def report_start
-      return true unless reporter.present?
+      return true if reporter.blank?
 
       reporter.call({
         event: 'start',
@@ -56,7 +56,7 @@ module IMDbImporter
     end
 
     def report_progress
-      return true unless reporter.present?
+      return true if reporter.blank?
 
       reporter.call({
         event: 'progress',
@@ -71,7 +71,7 @@ module IMDbImporter
     end
 
     def report_completion
-      return true unless reporter.present?
+      return true if reporter.blank?
 
       reporter.call({
         event: 'completion',
