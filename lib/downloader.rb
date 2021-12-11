@@ -1,34 +1,33 @@
 # frozen_string_literal: true
 
 class Downloader
-  attr_reader :name
+  attr_reader :name, :reporter
 
-  def initialize(name)
+  def initialize(name, **options)
     @name = name
+    @reporter = options[:reporter] || ConsoleDownloadReporter.new
   end
 
   def call
-    return unless download?
+    report_skipping && return unless download?
 
-    printf "\rDownloading #{filename} to #{path}\n"
+    report_start
 
     download
     unzip
     update_dataset
 
-    printf "\rDownloaded #{filename} to #{path}\n"
+    report_completion
   end
 
   def download
-    length_formatted = format_to_human_readable(length)
     Faraday.get(url) do |req|
       req.options.on_data = lambda do |chunk, received_bytes|
-        received_formatted = format_to_human_readable(received_bytes)
-
-        printf "\rDownloading#{dots.next.ljust(5, ' ')} #{received_formatted}/#{length_formatted}"
         File.open(path, 'a:ASCII-8BIT') do |file|
           file.write(chunk)
         end
+
+        report_progress(received_bytes)
       end
     end
   end
@@ -49,17 +48,8 @@ class Downloader
     @total_items ||= `wc -l #{dataset.path}`.split.first.to_i - 1
   end
 
-  def format_to_human_readable(number)
-    ApplicationController.helpers.number_to_human_size(
-      number,
-      significant: false,
-      precision: 2,
-      strip_insignificant_zeros: false
-    )
-  end
-
   def length
-    @length ||= (head.headers['content-length'].to_f / Numeric::MEGABYTE).round(2)
+    @length ||= head.headers['content-length'].to_i
   end
 
   def head
@@ -76,10 +66,6 @@ class Downloader
     dataset.download_path
   end
 
-  def filename
-    dataset.zip_filename
-  end
-
   def url
     dataset.imdb_url
   end
@@ -88,7 +74,33 @@ class Downloader
     @dataset ||= Dataset.find_by(name: name)
   end
 
-  def dots
-    @dots ||= (1..4).map { |i| '.' * i }.cycle
+  def report_skipping
+    return true if reporter.blank?
+
+    reporter.call({event: 'skip', name: name})
+  end
+
+  def report_start
+    return true if reporter.blank?
+
+    reporter.call({event: 'start', name: name, path: path, length: length})
+  end
+
+  def report_progress(completed)
+    return true if reporter.blank?
+
+    reporter.call({
+      event: 'progress',
+      name: name,
+      path: path,
+      completed: completed,
+      length: length
+    })
+  end
+
+  def report_completion
+    return true if reporter.blank?
+
+    reporter.call({event: 'complete', name: name, path: path, length: length})
   end
 end
