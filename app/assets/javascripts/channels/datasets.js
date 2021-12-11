@@ -8,14 +8,14 @@ $(() => {
         $(`button.dataset-${body.action}-progress[data-id=${body.id}]`).hide();
         $(`button.dataset-${body.action}[data-id=${body.id}]`).show();
         $(`div.dataset-progress[data-id=${body.id}]`).hide();
-        $(`div.dataset-alert[data-id=${body.id}] > .message`)
+        $(`div.dataset-success[data-id=${body.id}] > .message`)
           .text(`Imported ${body.length} items`);
-        $(`div.dataset-alert[data-id=${body.id}] > .btn-close`)
+        $(`div.dataset-success[data-id=${body.id}] > .btn-close`)
           .click(() => {
-            $(`div.dataset-alert[data-id=${body.id}] > .btn-close`).off('click')
-            $(`div.dataset-alert[data-id=${body.id}]`).hide()
+            $(`div.dataset-success[data-id=${body.id}] > .btn-close`).off('click')
+            $(`div.dataset-success[data-id=${body.id}]`).hide()
           });
-        $(`div.dataset-alert[data-id=${body.id}]`).show();
+        $(`div.dataset-success[data-id=${body.id}]`).show();
       } else {
         $(`button.dataset-${body.action}-progress[data-id=${body.id}]`).show();
         $(`button.dataset-${body.action}[data-id=${body.id}]`).hide();

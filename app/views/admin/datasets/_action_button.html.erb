@@ -1,0 +1,22 @@
+<button
+  type="button"
+  class="btn btn-primary btn-sm shadow-none dataset-update"
+  data-id="<%= id %>"
+>
+  <%= action.capitalize %>
+</button>
+<button
+  type="button"
+  class="btn btn-primary btn-sm shadow-none dataset-update-progress"
+  data-id="<%= id %>"
+  disabled
+  style="display: none;"
+>
+  <span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+  >
+  </span>
+    <%= "#{action == 'import' ? 'Importing' : 'Updating'}..." %>
+</button>

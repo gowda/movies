@@ -3,122 +3,33 @@
     <div class="card-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-auto">
-          <%= "#{dataset[:name]} (#{dataset[:source]})" %>
+          <%= "#{dataset.display_name} (#{dataset.source})" %>
         </div>
         <div class="col-auto">
-          <% if dataset[:count].zero? %>
-            <button
-              type="button"
-              class="btn btn-dark btn-sm shadow-none dataset-import"
-              data-id="<%= dataset[:id] %>"
-            >
-              Import
-            </button>
-            <button
-              type="button"
-              class="btn btn-dark btn-sm shadow-none dataset-import-progress"
-              data-id="<%= dataset[:id] %>"
-              disabled
-              style="display: none;"
-            >
-              <span
-                class="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              >
-              </span>
-              Importing...
-            </button>
+          <% if dataset.fetched? %>
+            <%= render 'action_button', id: dataset.id, action: 'update' %>
           <% else %>
-            <button
-              type="button"
-              class="btn btn-primary btn-sm shadow-none dataset-update"
-              data-id="<%= dataset[:id] %>"
-            >
-              Update
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary btn-sm shadow-none dataset-update-progress"
-              data-id="<%= dataset[:id] %>"
-              disabled
-              style="display: none;"
-            >
-              <span
-                class="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              >
-              </span>
-              Updating...
-            </button>
+            <%= render 'action_button', id: dataset.id, action: 'import' %>
           <% end %>
         </div>
       </div>
     </div>
     <div class="card-body">
         <h5 class="card-title">
-          <%= number_to_human(dataset[:count]) %>
+          <%= number_to_human(dataset.total) %>
         </h5>
         <div class="card-text">
-          <div
-            class="alert alert-success alert-dismissible fade show dataset-alert"
-            role="alert"
-            data-id="<%= dataset[:id] %>"
-            style="display: none;"
-          >
-            <span class="message"></span>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Close"
-            >
-            </button>
-          </div>
-          <div
-            class="alert alert-danger alert-dismissible fade show dataset-error"
-            role="alert"
-            data-id="<%= dataset[:id] %>"
-            style="display: none;"
-          >
-            <span class="message"></span>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Close"
-            >
-            </button>
-          </div>
+          <%= render 'alert', id: dataset.id, type: 'success' %>
+          <%= render 'alert', id: dataset.id, type: 'danger' %>
           <p>
             With supporting text below as a natural lead-in to additional content.
           </p>
-          <div
-            class="row align-items-center dataset-progress"
-            data-id="<%= dataset[:id] %>"
-            style="display: none;"
-          >
-            <div class="col-10">
-              <div class="progress">
-                <div
-                  class="progress-bar progress-bar-striped progress-bar-animated"
-                  role="progressbar"
-                  aria-valuenow="75"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  style="width: 75%"
-                >
-                </div>
-              </div>
-            </div>
-            <div class="col-2">
-              <span class="label">75%</span>
-            </div>
-          </div>
+          <%= render 'progress', id: dataset.id %>
         </div>
       </div>
     <div class="card-footer">
       <small class="text-muted">
-        Last updated <%= time_ago_in_words(dataset[:updated_at]) %>
+        Last updated <%= time_ago_in_words(dataset.updated_at) %>
       </small>
     </div>
   </div>
