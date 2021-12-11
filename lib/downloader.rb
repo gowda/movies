@@ -11,13 +11,15 @@ class Downloader
   def call
     report_skipping && return unless download?
 
-    report_start
-
+    report_download_start
     download
-    unzip
-    update_dataset
+    report_download_completion
 
-    report_completion
+    report_unzip_start
+    unzip
+    report_unzip_completion
+
+    update_dataset
   end
 
   def download
@@ -27,7 +29,7 @@ class Downloader
           file.write(chunk)
         end
 
-        report_progress(received_bytes)
+        report_download_progress(received_bytes)
       end
     end
   end
@@ -77,19 +79,20 @@ class Downloader
   def report_skipping
     return true if reporter.blank?
 
-    reporter.call({event: 'skip', name: name})
+    reporter.call({phase: 'download', event: 'skip', name: name})
   end
 
-  def report_start
+  def report_download_start
     return true if reporter.blank?
 
-    reporter.call({event: 'start', name: name, path: path, length: length})
+    reporter.call({phase: 'download', event: 'start', name: name, path: path, length: length})
   end
 
-  def report_progress(completed)
+  def report_download_progress(completed)
     return true if reporter.blank?
 
     reporter.call({
+      phase: 'download',
       event: 'progress',
       name: name,
       path: path,
@@ -98,9 +101,21 @@ class Downloader
     })
   end
 
-  def report_completion
+  def report_download_completion
     return true if reporter.blank?
 
-    reporter.call({event: 'complete', name: name, path: path, length: length})
+    reporter.call({phase: 'download', event: 'complete', name: name, path: path, length: length})
+  end
+
+  def report_unzip_start
+    return true if reporter.blank?
+
+    reporter.call({phase: 'unzip', event: 'start', name: name, path: path, length: length})
+  end
+
+  def report_unzip_completion
+    return true if reporter.blank?
+
+    reporter.call({phase: 'unzip', event: 'complete', name: name, path: path, length: length})
   end
 end

@@ -2,18 +2,36 @@
 
 class ConsoleDownloadReporter
   def call(payload)
+    case payload[:phase]
+    when 'download'
+      handle_download_report(payload)
+    when 'unzip'
+      handle_unzip_report(payload)
+    end
+
+    true
+  end
+
+  def handle_download_report(payload)
     case payload[:event]
     when 'skip'
       printf "Skipping #{payload[:name]}\n"
     when 'start'
       printf "\rDownloading #{payload[:name]} to #{payload[:path]}"
     when 'progress'
-      printf "\r#{' ' * 128}\rDownloading #{payload[:name]}#{dots.next.ljust(5, ' ')} #{human_readable(payload[:completed])}/#{human_readable(payload[:length])}"
+      printf "\r#{' ' * 106}\rDownloading #{payload[:name]}#{dots.next.ljust(5, ' ')} #{human_readable(payload[:completed])}/#{human_readable(payload[:length])}"
     when 'complete'
-      printf "\r#{' ' * 128}\rDownloaded #{payload[:name]} (#{human_readable(payload[:length])})\n"
+      printf "\r#{' ' * 106}\rDownloaded #{payload[:name]} (#{human_readable(payload[:length])})\n"
     end
+  end
 
-    true
+  def handle_unzip_report(payload)
+    case payload[:event]
+    when 'start'
+      printf "\rUnzipping #{payload[:name]}"
+    when 'complete'
+      printf "\r#{' ' * 80}\rUnzipped #{payload[:name]}\n"
+    end
   end
 
   def human_readable(number)
