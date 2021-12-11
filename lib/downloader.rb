@@ -35,6 +35,14 @@ class Downloader
     `gunzip -fk #{path}`
   end
 
+  def update_dataset
+    dataset.update(total: total_items)
+  end
+
+  def total_items
+    @total_items ||= `wc -l #{dataset.path}`.split.first.to_i - 1
+  end
+
   def format_to_human_readable(number)
     kb_formatted = (number.to_f / Numeric::KILOBYTE).round(2)
     formatted = kb_formatted > 1024 ? (number.to_f / Numeric::MEGABYTE).round(2) : kb_formatted
@@ -57,15 +65,19 @@ class Downloader
   end
 
   def path
-    Rails.root.join("tmp/#{filename}")
+    dataset.download_path
   end
 
   def filename
-    File.basename(url)
+    dataset.zip_filename
   end
 
   def url
-    "https://datasets.imdbws.com/#{name}.tsv.gz"
+    dataset.imdb_url
+  end
+
+  def dataset
+    @dataset ||= Dataset.find_by(name: name)
   end
 
   def dots
