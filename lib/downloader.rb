@@ -36,7 +36,11 @@ class Downloader
   end
 
   def update_dataset
-    dataset.update(total: total_items)
+    dataset.update(total: total_items, file_md5sum: file_md5sum)
+  end
+
+  def file_md5sum
+    @file_md5sum ||= `md5sum #{dataset.path} | awk '{ print $1 }'`.split.first
   end
 
   def total_items
