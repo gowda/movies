@@ -1,28 +1,16 @@
 # frozen_string_literal: true
 
+require 'downloader'
+
 class DatasetUpdateJob < ApplicationJob
-  def perform(id)
-    completed = 0
-    length = 5_000
+  def perform(name)
+    reporter = create_reporter(name)
 
-    loop do
-      completed += rand(1..1000)
-      completed = [completed, length].min
+    Downloader.new(name).call
+    IMDbImporter.import(name, reporter)
+  end
 
-      ActionCable.server.broadcast(
-        'admin_datasets',
-        {
-          body: {
-            id: id,
-            action: 'update',
-            completed: completed,
-            length: length
-          }
-        }
-      )
-      sleep rand(1..10)
-
-      break if completed == length
-    end
+  def create_reporter(name)
+    CableImportReporter.new(name, 'update')
   end
 end
