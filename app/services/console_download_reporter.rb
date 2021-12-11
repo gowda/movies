@@ -12,6 +12,7 @@ class ConsoleDownloadReporter
     true
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def handle_download_report(payload)
     case payload[:event]
     when 'skip'
@@ -19,11 +20,15 @@ class ConsoleDownloadReporter
     when 'start'
       printf "\rDownloading #{payload[:name]} to #{payload[:path]}"
     when 'progress'
-      printf "\r#{' ' * 106}\rDownloading #{payload[:name]}#{dots.next.ljust(5, ' ')} #{human_readable(payload[:completed])}/#{human_readable(payload[:length])}"
+      prefix = "Downloading #{payload[:name]}#{dots.next.ljust(5, ' ')}"
+      suffix = "#{human_readable(payload[:completed])}/#{human_readable(payload[:length])}"
+
+      printf "\r#{' ' * 106}\r#{prefix} #{suffix}"
     when 'complete'
       printf "\r#{' ' * 106}\rDownloaded #{payload[:name]} (#{human_readable(payload[:length])})\n"
     end
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def handle_unzip_report(payload)
     case payload[:event]

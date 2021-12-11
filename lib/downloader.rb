@@ -79,13 +79,13 @@ class Downloader
   def report_skipping
     return true if reporter.blank?
 
-    reporter.call({phase: 'download', event: 'skip', name: name})
+    reporter.call({ phase: 'download', event: 'skip', name: name })
   end
 
   def report_download_start
     return true if reporter.blank?
 
-    reporter.call({phase: 'download', event: 'start', name: name, path: path, length: length})
+    reporter.call({ phase: 'download', event: 'start', name: name, path: path, length: length })
   end
 
   def report_download_progress(completed)
@@ -104,18 +104,18 @@ class Downloader
   def report_download_completion
     return true if reporter.blank?
 
-    reporter.call({phase: 'download', event: 'complete', name: name, path: path, length: length})
+    reporter.call({ phase: 'download', event: 'complete', name: name, path: path, length: length })
   end
 
   def report_unzip_start
     return true if reporter.blank?
 
-    reporter.call({phase: 'unzip', event: 'start', name: name, path: path, length: length})
+    reporter.call({ phase: 'unzip', event: 'start', name: name, path: path, length: length })
   end
 
   def report_unzip_completion
     return true if reporter.blank?
 
-    reporter.call({phase: 'unzip', event: 'complete', name: name, path: path, length: length})
+    reporter.call({ phase: 'unzip', event: 'complete', name: name, path: path, length: length })
   end
 end
