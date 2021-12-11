@@ -28,9 +28,18 @@
         </div>
       </div>
     <div class="card-footer">
-      <small class="text-muted">
-        Last updated <%= time_ago_in_words(dataset.updated_at) %>
-      </small>
+      <div class="row justify-content-between">
+        <div class="col">
+          <small class="text-muted">
+            Last updated <%= time_ago_in_words(dataset.updated_at) %>
+          </small>
+        </div>
+        <div class="col text-end">
+          <small class="text-muted">
+            <%= dataset.file_md5sum %>
+          </small>
+        </div>
+      </div>
     </div>
   </div>
 </div>
