@@ -13,6 +13,8 @@ class Downloader
     printf "\rDownloading #{filename} to #{path}\n"
 
     download
+    unzip
+    update_dataset
 
     printf "\rDownloaded #{filename} to #{path}\n"
   end
@@ -20,14 +22,14 @@ class Downloader
   def download
     length_formatted = format_to_human_readable(length)
     Faraday.get(url) do |req|
-      req.options.on_data = lambda { |chunk, received_bytes|
+      req.options.on_data = lambda do |chunk, received_bytes|
         received_formatted = format_to_human_readable(received_bytes)
 
         printf "\rDownloading#{dots.next.ljust(5, ' ')} #{received_formatted}/#{length_formatted}"
         File.open(path, 'a:ASCII-8BIT') do |file|
           file.write(chunk)
         end
-      }
+      end
     end
   end
 
@@ -36,7 +38,7 @@ class Downloader
   end
 
   def update_dataset
-    dataset.update(total: total_items, file_md5sum: file_md5sum)
+    dataset.update!(total: total_items, file_md5sum: file_md5sum)
   end
 
   def file_md5sum

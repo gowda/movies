@@ -6,65 +6,37 @@ require 'parsers'
 namespace :import do
   desc 'download title.basics.tsv.gz'
   task download_title_basics: :environment do
-    downloader = Downloader.new('title.basics')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('title.basics').call
   end
 
   desc 'download name.basics.tsv.gz'
   task download_name_basics: :environment do
-    downloader = Downloader.new('name.basics')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('name.basics').call
   end
 
   desc 'download title.akas.tsv.gz'
   task download_title_akas: :environment do
-    downloader = Downloader.new('title.akas')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('title.akas').call
   end
 
   desc 'download title.crew.tsv.gz'
   task download_title_crew: :environment do
-    downloader = Downloader.new('title.crew')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('title.crew').call
   end
 
   desc 'download title.episode.tsv.gz'
   task download_title_episode: :environment do
-    downloader = Downloader.new('title.episode')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('title.episode').call
   end
 
   desc 'download title.principals.tsv.gz'
   task download_title_principals: :environment do
-    downloader = Downloader.new('title.principals')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('title.principals').call
   end
 
   desc 'download title.ratings.tsv.gz'
   task download_title_ratings: :environment do
-    downloader = Downloader.new('title.ratings')
-
-    downloader.call
-    downloader.unzip
-    downloader.update_dataset
+    Downloader.new('title.ratings').call
   end
 
   desc 'download all datasets'
