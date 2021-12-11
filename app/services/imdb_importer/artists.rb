@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
-require 'csv'
 require_relative 'base'
 
-module Parsers
-  class NameBasics < Base
-    KEY_MAPPING = {
-      'nconst' => 'imdb_id',
-      'primaryName' => 'name'
-    }.freeze
+module IMDbImporter
+  class Artists < Base
+    def name
+      'name.basics'
+    end
+
+    def item_count_in_db
+      @item_count_in_db ||= Artist.count
+    end
 
     def before_call
+      super
       ActiveRecord::Base.connection.remove_foreign_key :principals, :artists
       ActiveRecord::Base.connection.remove_foreign_key :writings, :artists
       ActiveRecord::Base.connection.remove_foreign_key :directings, :artists
@@ -22,6 +25,7 @@ module Parsers
     end
 
     def after_call
+      super
       ActiveRecord::Base.connection.add_index :artists, :imdb_id, unique: true, if_not_exists: true
       ActiveRecord::Base.connection.add_foreign_key :directings,
         :artists,
@@ -33,16 +37,6 @@ module Parsers
         :artists,
         column: :artist_imdb_id,
         primary_key: :imdb_id
-    end
-
-    def name
-      'name.basics'
-    end
-
-    def header_converters
-      lambda do |h|
-        (KEY_MAPPING[h].presence || h).underscore
-      end
     end
   end
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'downloader'
-require 'parsers'
 
 namespace :import do
   desc 'download title.basics.tsv.gz'
@@ -45,32 +44,12 @@ namespace :import do
 
   desc 'parse and load title.basics.tsv'
   task parse_and_load_title_basics: :download_title_basics do
-    in_file = `wc -l #{Rails.root.join('tmp/title.basics.tsv')}`.split.first.to_i - 1
-    in_db = Title.count
-
-    if in_file == in_db
-      puts 'Skipping title.basics.tsv'
-      next
-    end
-
-    puts 'Processing title.basics.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::TitleBasics.new.call
+    IMDbImporter.import('title.basics')
   end
 
   desc 'parse and load name.basics.tsv'
   task parse_and_load_name_basics: :download_name_basics do
-    in_file = `wc -l #{Rails.root.join('tmp/name.basics.tsv')}`.split.first.to_i - 1
-    in_db = Artist.count
-
-    if in_file == in_db
-      puts 'Skipping name.basics.tsv'
-      next
-    end
-
-    puts 'Processing name.basics.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::NameBasics.new.call
+    IMDbImporter.import('name.basics')
   end
 
   desc 'parse and load base datasets'
@@ -78,77 +57,27 @@ namespace :import do
 
   desc 'parse and load title.akas.tsv'
   task parse_and_load_title_akas: %i[parse_and_load_base download_title_akas] do
-    in_file = `wc -l #{Rails.root.join('tmp/title.akas.tsv')}`.split.first.to_i - 1
-    in_db = AlternateTitle.count
-
-    if in_file == in_db
-      puts 'Skipping title.akas.tsv'
-      next
-    end
-
-    puts 'Processing title.akas.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::TitleAkas.new.call
+    IMDbImporter.import('title.akas')
   end
 
   desc 'parse and load title.crew.tsv'
   task parse_and_load_title_crew: %i[parse_and_load_base download_title_crew] do
-    in_file = `wc -l #{Rails.root.join('tmp/title.crew.tsv')}`.split.first.to_i - 1
-    in_db = AlternateTitle.count
-
-    if in_file == in_db
-      puts 'Skipping title.crew.tsv'
-      next
-    end
-
-    puts 'Processing title.crew.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::TitleCrew.new.call
+    IMDbImporter.import('title.crew')
   end
 
   desc 'parse and load title.episode.tsv'
   task parse_and_load_title_episode: %i[parse_and_load_base download_title_episode] do
-    in_file = `wc -l #{Rails.root.join('tmp/title.episode.tsv')}`.split.first.to_i - 1
-    in_db = AlternateTitle.count
-
-    if in_file == in_db
-      puts 'Skipping title.episode.tsv'
-      next
-    end
-
-    puts 'Processing title.episode.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::TitleEpisode.new.call
+    IMDbImporter.import('title.episode')
   end
 
   desc 'parse and load title.principals.tsv'
   task parse_and_load_title_principals: %i[parse_and_load_base download_title_principals] do
-    in_file = `wc -l #{Rails.root.join('tmp/title.principals.tsv')}`.split.first.to_i - 1
-    in_db = Principal.count
-
-    if in_file == in_db
-      puts 'Skipping title.principals.tsv'
-      next
-    end
-
-    puts 'Processing title.principals.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::TitlePrincipals.new.call
+    IMDbImporter.import('title.principals')
   end
 
   desc 'parse and load title.ratings.tsv'
   task parse_and_load_title_ratings: %i[parse_and_load_base download_title_ratings] do
-    in_file = `wc -l #{Rails.root.join('tmp/title.ratings.tsv')}`.split.first.to_i - 1
-    in_db = IMDbRating.count
-
-    if in_file == in_db
-      puts 'Skipping title.ratings.tsv'
-      next
-    end
-
-    puts 'Processing title.ratings.tsv'
-    ActiveRecord::Base.logger = nil
-    Parsers::TitleRatings.new.call
+    IMDbImporter.import('title.ratings')
   end
 
   desc 'parse and load additional dataset'

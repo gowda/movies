@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
-require 'csv'
 require_relative 'base'
 
-module Parsers
-  class TitleCrew < Base
+module IMDbImporter
+  class DirectorsAndWriters < Base
+    def name
+      'title.crew'
+    end
+
+    def import?
+      true
+    end
+
     def before_call
+      super
       ActiveRecord::Base.connection.remove_index :directings, :title_imdb_id
       ActiveRecord::Base.connection.remove_index :directings, :director_imdb_id
 
@@ -49,19 +57,13 @@ module Parsers
     end
 
     def after_call
+      super
+
       ActiveRecord::Base.connection.add_index :directings, :title_imdb_id, if_not_exists: true
       ActiveRecord::Base.connection.add_index :directings, :director_imdb_id, if_not_exists: true
 
       ActiveRecord::Base.connection.add_index :writings, :title_imdb_id, if_not_exists: true
       ActiveRecord::Base.connection.add_index :writings, :writer_imdb_id, if_not_exists: true
-    end
-
-    def name
-      'title.crew'
-    end
-
-    def header_converters
-      ->(h) { h.underscore }
     end
   end
 end

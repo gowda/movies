@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
-require 'csv'
 require_relative 'base'
 
-module Parsers
-  class TitlePrincipals < Base
-    KEY_MAPPING = {
-      'tconst' => 'title_imdb_id',
-      'nconst' => 'artist_imdb_id'
-    }.freeze
+module IMDbImporter
+  class Principals < Base
+    def name
+      'title.principals'
+    end
+
+    def item_count_in_db
+      @item_count_in_db ||= Principal.count
+    end
 
     def before_call
+      super
       ActiveRecord::Base.connection.remove_index :principals, :title_imdb_id
       ActiveRecord::Base.connection.remove_index :principals, :artist_imdb_id
     end
@@ -22,18 +25,9 @@ module Parsers
     end
 
     def after_call
+      super
       ActiveRecord::Base.connection.add_index :principals, :title_imdb_id, if_not_exists: true
       ActiveRecord::Base.connection.add_index :principals, :artist_imdb_id, if_not_exists: true
-    end
-
-    def name
-      'title.principals'
-    end
-
-    def header_converters
-      lambda do |h|
-        (KEY_MAPPING[h].presence || h).underscore
-      end
     end
   end
 end
