@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_11_065424) do
+ActiveRecord::Schema.define(version: 2021_12_11_105717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2021_12_11_065424) do
     t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.string "file_md5sum"
+    t.integer "ordering", default: 255
   end
 
   create_table "directings", force: :cascade do |t|
