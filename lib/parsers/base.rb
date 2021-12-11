@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'csv'
+require_relative '../imdb_dataset_parser'
 
 module Parsers
   class Base
@@ -9,7 +9,7 @@ module Parsers
     def call
       before_call
 
-      CSV.foreach(path, options).each_slice(SLICE_SIZE) do |rows|
+      IMDbDatasetParser.new(name, path).take(SLICE_SIZE * 5).each_slice(SLICE_SIZE) do |rows|
         insert_rows!(rows)
 
         dataset.increment!(:completed, rows.length, touch: true)
@@ -38,24 +38,6 @@ module Parsers
 
     def name
       raise NotImplemented, 'do not know which file to read from'
-    end
-
-    def options
-      {
-        col_sep: "\t",
-        headers: true,
-        liberal_parsing: true,
-        header_converters: header_converters,
-        converters: field_converters
-      }
-    end
-
-    def header_converters
-      ->(h) { h == 'attributes' ? 'imdb_attributes' : h.underscore }
-    end
-
-    def field_converters
-      ->(v) { v != '\N' ? v : nil }
     end
 
     def exceptions
