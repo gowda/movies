@@ -21,7 +21,6 @@ module IMDbImporter
     def pre_process
       super
       remove_index
-      ActiveRecord::Base.connection.remove_index :imdb_ratings, :title_imdb_id
     end
 
     def post_process
