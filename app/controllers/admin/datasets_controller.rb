@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# froze_string_literal: true
-
 module Admin
   class DatasetsController < ApplicationController
     def index
