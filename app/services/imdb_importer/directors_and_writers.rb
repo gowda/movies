@@ -12,20 +12,53 @@ module IMDbImporter
       true
     end
 
-    def before_call
-      super
-      ActiveRecord::Base.connection.remove_index :directings, :title_imdb_id
-      ActiveRecord::Base.connection.remove_index :directings, :director_imdb_id
-
-      ActiveRecord::Base.connection.remove_index :writings, :title_imdb_id
-      ActiveRecord::Base.connection.remove_index :writings, :writer_imdb_id
-    end
-
     def insert_rows!(rows)
       ActiveRecord::Base.connection.disable_referential_integrity do
         insert_directings!(rows)
         insert_writings!(rows)
       end
+    end
+
+    def pre_process
+      super
+      remove_indices
+    end
+
+    def post_process
+      add_indices
+      super
+    end
+
+    private
+
+    def add_indices
+      add_directings_indices
+      add_writings_indices
+    end
+
+    def remove_indices
+      remove_directings_indices
+      remove_writings_indices
+    end
+
+    def add_directings_indices
+      ActiveRecord::Base.connection.add_index :directings, :title_imdb_id, if_not_exists: true
+      ActiveRecord::Base.connection.add_index :directings, :director_imdb_id, if_not_exists: true
+    end
+
+    def add_writings_indices
+      ActiveRecord::Base.connection.add_index :writings, :title_imdb_id, if_not_exists: true
+      ActiveRecord::Base.connection.add_index :writings, :writer_imdb_id, if_not_exists: true
+    end
+
+    def remove_directings_indices
+      ActiveRecord::Base.connection.remove_index :directings, :title_imdb_id
+      ActiveRecord::Base.connection.remove_index :directings, :director_imdb_id
+    end
+
+    def remove_writings_indices
+      ActiveRecord::Base.connection.remove_index :writings, :title_imdb_id
+      ActiveRecord::Base.connection.remove_index :writings, :writer_imdb_id
     end
 
     def insert_directings!(rows)
@@ -54,16 +87,6 @@ module IMDbImporter
           .map { |id| { 'title_imdb_id' => row['tconst'], "#{key.singularize}_imdb_id" => id } }
         )
       end
-    end
-
-    def after_call
-      super
-
-      ActiveRecord::Base.connection.add_index :directings, :title_imdb_id, if_not_exists: true
-      ActiveRecord::Base.connection.add_index :directings, :director_imdb_id, if_not_exists: true
-
-      ActiveRecord::Base.connection.add_index :writings, :title_imdb_id, if_not_exists: true
-      ActiveRecord::Base.connection.add_index :writings, :writer_imdb_id, if_not_exists: true
     end
   end
 end

@@ -20,14 +20,14 @@ module IMDbImporter
     def call
       report_skipping && return unless import?
 
-      before_process
+      pre_process
       process
-      after_process
+      post_process
       report_completion
     end
 
     def process
-      IMDbDatasetParser.new(name, path).take(SLICE_SIZE * 5).each_slice(SLICE_SIZE) do |rows|
+      IMDbDatasetParser.new(name, path).each_slice(SLICE_SIZE) do |rows|
         insert_rows!(rows)
 
         dataset.increment!(:completed, rows.length, touch: true)
@@ -85,16 +85,14 @@ module IMDbImporter
       "Created #{completed} records"
     end
 
-    def before_call
+    def pre_process
       report_start
       ActiveRecord::Base.logger = nil
     end
-    alias_method :before_process, :before_call
 
-    def after_call
+    def post_process
       dataset.update(fetched: true)
     end
-    alias_method :after_process, :after_call
 
     def name
       raise NotImplemented, 'do not know which file to read from'

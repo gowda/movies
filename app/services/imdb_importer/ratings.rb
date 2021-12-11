@@ -12,20 +12,31 @@ module IMDbImporter
       @item_count_in_db ||= IMDbRating.count
     end
 
-    def before_call
-      super
-      ActiveRecord::Base.connection.remove_index :imdb_ratings, :title_imdb_id
-    end
-
     def insert_rows!(rows)
       ActiveRecord::Base.connection.disable_referential_integrity do
         IMDbRating.insert_all!(rows.map(&:to_h))
       end
     end
 
-    def after_call
+    def pre_process
       super
+      remove_index
+      ActiveRecord::Base.connection.remove_index :imdb_ratings, :title_imdb_id
+    end
+
+    def post_process
+      super
+      add_index
+    end
+
+    private
+
+    def add_index
       ActiveRecord::Base.connection.add_index :imdb_ratings, :title_imdb_id, if_not_exists: true
+    end
+
+    def remove_index
+      ActiveRecord::Base.connection.remove_index :imdb_ratings, :title_imdb_id
     end
   end
 end

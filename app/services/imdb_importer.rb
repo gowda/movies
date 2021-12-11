@@ -20,10 +20,10 @@ module IMDbImporter
       'title.ratings' => Ratings
     }
 
-    def import(name)
+    def import(name, reporter = nil)
       raise ArgumentError, "do not know how to import #{name}" if unknown?(name)
 
-      IMPORTERS[name].import
+      IMPORTERS[name].import(reporter)
     end
 
     def unknown?(name)

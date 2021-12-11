@@ -4,6 +4,54 @@ require_relative 'base'
 
 module IMDbImporter
   class Titles < Base
+    FOREIGN_KEY_OPTIONS = {
+      alternate_titles: [
+        {
+          target: :titles,
+          column: :imdb_id,
+          primary_key: :imdb_id
+        }
+      ],
+      directings: [
+        {
+          target: :titles,
+          column: :title_imdb_id,
+          primary_key: :imdb_id
+        }
+      ],
+      writings: [
+        {
+          target: :titles,
+          column: :title_imdb_id,
+          primary_key: :imdb_id
+        }
+      ],
+      title_episodes: [
+        {
+          target: :titles,
+          column: :title_imdb_id,
+          primary_key: :imdb_id
+        },
+        {
+          target: :titles,
+          column: :episode_imdb_id,
+          primary_key: :imdb_id
+        }
+      ],
+      principals: [
+        {
+          target: :titles,
+          column: :title_imdb_id,
+          primary_key: :imdb_id
+        }
+      ],
+      imdb_ratings: [
+        target: :titles,
+        column: :title_imdb_id,
+        primary_key: :imdb_id
+      ]
+    }
+
     def name
       'title.basics'
     end
@@ -12,43 +60,54 @@ module IMDbImporter
       @item_count_in_db ||= Title.count
     end
 
-    def before_call
-      super
-      ActiveRecord::Base.connection.remove_foreign_key :imdb_ratings, :titles
-      ActiveRecord::Base.connection.remove_foreign_key :principals, :titles
-      ActiveRecord::Base.connection.remove_foreign_key :writings, :titles
-      ActiveRecord::Base.connection.remove_foreign_key :directings, :titles
-      ActiveRecord::Base.connection.remove_foreign_key :alternate_titles, :titles
-      ActiveRecord::Base.connection.remove_foreign_key :title_episodes, :titles
-      ActiveRecord::Base.connection.remove_foreign_key :title_episodes, :titles
-      ActiveRecord::Base.connection.remove_index :titles, :imdb_id
-    end
-
     def insert_rows!(rows)
       Title.insert_all!(rows.map(&:to_h))
     end
 
-    # rubocop:disable Metrics/MethodLength
-    def after_call
+    def pre_process
       super
-      ActiveRecord::Base.connection.add_index :titles, :imdb_id, unique: true, if_not_exists: true
-      ActiveRecord::Base.connection.add_foreign_key :alternate_titles, :titles, column: :imdb_id, primary_key: :imdb_id
-      ActiveRecord::Base.connection.add_foreign_key :directings, :titles, column: :title_imdb_id, primary_key: :imdb_id
-      ActiveRecord::Base.connection.add_foreign_key :writings, :titles, column: :title_imdb_id, primary_key: :imdb_id
-      ActiveRecord::Base.connection.add_foreign_key :title_episodes,
-        :titles,
-        column: :title_imdb_id,
-        primary_key: :imdb_id
-      ActiveRecord::Base.connection.add_foreign_key :title_episodes,
-        :titles,
-        column: :episode_imdb_id,
-        primary_key: :imdb_id
-      ActiveRecord::Base.connection.add_foreign_key :principals, :titles, column: :title_imdb_id, primary_key: :imdb_id
-      ActiveRecord::Base.connection.add_foreign_key :imdb_ratings,
-        :titles,
-        column: :title_imdb_id,
-        primary_key: :imdb_id
+      remove_foreign_keys
+      remove_index
     end
-    # rubocop:enable Metrics/MethodLength
+
+    def post_process
+      add_index
+      add_foreign_keys
+      super
+    end
+
+    private
+
+    def add_index
+      ActiveRecord::Base.connection.add_index :titles, :imdb_id, unique: true, if_not_exists: true
+    end
+
+    def add_foreign_keys
+      FOREIGN_KEY_OPTIONS.keys.each do |table|
+        add_foreign_keys_for(table)
+      end
+    end
+
+    def remove_index
+      ActiveRecord::Base.connection.remove_index :titles, :imdb_id
+    end
+
+    def remove_foreign_keys
+      FOREIGN_KEY_OPTIONS.keys.each do |table|
+        remove_foreign_keys_for(table)
+      end
+    end
+
+    def add_foreign_keys_for(table)
+      FOREIGN_KEY_OPTIONS[table].each do |options|
+        ActiveRecord::Base.connection.add_foreign_key table, options[:target], options.except(:target)
+      end
+    end
+
+    def remove_foreign_keys_for(table)
+      FOREIGN_KEY_OPTIONS[table].each do |options|
+        ActiveRecord::Base.connection.remove_foreign_key table, options[:target], options.except(:target)
+      end
+    end
   end
 end
