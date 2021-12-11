@@ -1,14 +1,18 @@
+<% btn_colors = { 'import' => 'dark', 'update' => 'primary' } %>
+
 <button
   type="button"
-  class="btn btn-primary btn-sm shadow-none dataset-update"
+  class="btn <%= "btn-#{btn_colors[action]}" %> btn-sm shadow-none dataset-update"
   data-id="<%= id %>"
+  data-name="<%= name %>"
 >
   <%= action.capitalize %>
 </button>
 <button
   type="button"
-  class="btn btn-primary btn-sm shadow-none dataset-update-progress"
+  class="btn <%= "btn-#{btn_colors[action]}" %> btn-sm shadow-none dataset-update-progress"
   data-id="<%= id %>"
+  data-name="<%= name %>"
   disabled
   style="display: none;"
 >

@@ -10,75 +10,76 @@ $(() => {
   $('.dataset-import').click((e) => {
     e.preventDefault();
 
-    const id = $(e.target).data('id');
-    const options = { method: 'POST', data: { id } }
+    const name = $(e.target).data('name');
+    const options = { method: 'POST', data: { name } }
 
-    $(`button.dataset-import-progress[data-id=${id}]`).show();
-    $(`button.dataset-import[data-id=${id}]`).hide();
-    $(`div.dataset-success[data-id=${id}]`).hide();
-    $(`div.dataset-danger[data-id=${id}]`).hide();
+    $(`button.dataset-import-progress[data-name="${name}"]`).show();
+    $(`button.dataset-import[data-name="${name}"]`).hide();
+    $(`div.dataset-success[data-name="${name}"]`).hide();
+    $(`div.dataset-danger[data-name="${name}"]`).hide();
 
     $.ajax(`/admin/datasets`, options)
       .done((msg) => {
         console.log('done', msg);
 
-        $(`div.dataset-progress[data-id=${id}]`).show();
-        $(`div.dataset-progress[data-id=${id}] .progress > .progress-bar`)
+        $(`div.dataset-progress[data-name="${name}"]`).show();
+        $(`div.dataset-progress[data-name="${name}"] .progress > .progress-bar`)
           .attr('aria-value-now', 0)
           .attr('aria-value-max', 100)
           .css('width', '0%');
-        $(`div.dataset-progress[data-id=${id}] .label`).text('0%');
+        $(`div.dataset-progress[data-name="${name}"] .label`).text('0%');
       })
       .fail((err) => {
-        $(`div.dataset-danger[data-id=${id}] > .message`)
+        $(`div.dataset-danger[data-name="${name}"] > .message`)
           .text(`Failed to import items`);
-        $(`div.dataset-danger[data-id=${id}] > .btn-close`)
+        $(`div.dataset-danger[data-name="${name}"] > .btn-close`)
           .click(() => {
-            $(`div.dataset-danger[data-id=${id}] > .btn-close`).off('click')
-            $(`div.dataset-danger[data-id=${id}]`).hide();
+            $(`div.dataset-danger[data-name="${name}"] > .btn-close`).off('click')
+            $(`div.dataset-danger[data-name="${name}"]`).hide();
           });
-        $(`div.dataset-danger[data-id=${id}]`).show();
+        $(`div.dataset-danger[data-name="${name}"]`).show();
 
-        $(`button.dataset-import-progress[data-id=${id}]`).hide();
-        $(`button.dataset-import[data-id=${id}]`).show();
-        $(`div.dataset-progress[data-id=${id}]`).hide();
+        $(`button.dataset-import-progress[data-name="${name}"]`).hide();
+        $(`button.dataset-import[data-name="${name}"]`).show();
+        $(`div.dataset-progress[data-name="${name}"]`).hide();
       });
   });
 
   $('.dataset-update').click((e) => {
     e.preventDefault();
 
-    const id = $(e.target).data('id');
-    const options = { method: 'PUT' }
+    const name = $(e.target).data('name');
+    const id = $(e.target).data('id')
+    const options = { method: 'PUT', data: { name } }
 
-    $(`button.dataset-update-progress[data-id=${id}]`).show();
-    $(`button.dataset-update[data-id=${id}]`).hide();
-    $(`div.dataset-success[data-id=${id}]`).hide();
-    $(`div.dataset-danger[data-id=${id}]`).hide();
+    $(`button.dataset-update-progress[data-name="${name}"]`).show();
+    $(`button.dataset-update[data-name="${name}"]`).hide();
+    $(`div.dataset-success[data-name="${name}"]`).hide();
+    $(`div.dataset-danger[data-name="${name}"]`).hide();
 
     $.ajax(`/admin/datasets/${id}`, options)
       .done((msg) => {
         console.log('done', msg);
-        $(`div.dataset-progress[data-id=${id}]`).show();
-        $(`div.dataset-progress[data-id=${id}] .progress > .progress-bar`)
+        $(`div.dataset-progress[data-name="${name}"]`).show();
+        $(`div.dataset-progress[data-name="${name}"] .progress > .progress-bar`)
           .attr('aria-value-now', 0)
           .attr('aria-value-max', 100)
           .css('width', '0%');
-        $(`div.dataset-progress[data-id=${id}] .label`).text('0%');
+        $(`div.dataset-progress[data-name="${name}"] .label`).text('0%');
       })
       .fail((err) => {
-        $(`div.dataset-danger[data-id=${id}] > .message`)
+        $(`div.dataset-danger[data-name="${name}"] > .message`)
           .text(`Failed to update items`);
-          $(`div.dataset-danger[data-id=${id}] > .btn-close`)
+          $(`div.dataset-danger[data-name="${name}"] > .btn-close`)
           .click(() => {
-            $(`div.dataset-danger[data-id=${id}] > .btn-close`).off('click')
-            $(`div.dataset-danger[data-id=${id}]`).hide();
+            $(`div.dataset-danger[data-name="${name}"] > .btn-close`).off('click')
+            $(`div.dataset-danger[data-name="${name}"]`).hide();
           });
-        $(`div.dataset-danger[data-id=${id}]`).show();
+        $(`div.dataset-danger[data-name="${name}"]`).show();
 
-        $(`button.dataset-update-progress[data-id=${id}]`).hide();
-        $(`button.dataset-update[data-id=${id}]`).show();
-        $(`div.dataset-progress[data-id=${id}]`).hide();
+        $(`button.dataset-update-progress[data-name="${name}"]`).hide();
+        $(`button.dataset-update[data-name="${name}"]`).show();
+        $(`div.dataset-progress[data-name="${name}"]`).hide();
       });
   });
 });

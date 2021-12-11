@@ -6,11 +6,11 @@
           <%= "#{dataset.display_name} (#{dataset.source})" %>
         </div>
         <div class="col-auto">
-          <% if dataset.fetched? %>
-            <%= render 'action_button', id: dataset.id, action: 'update' %>
-          <% else %>
-            <%= render 'action_button', id: dataset.id, action: 'import' %>
-          <% end %>
+          <%= render 'action_button',
+                id: dataset.id,
+                name: dataset.name,
+                action: dataset.fetched? ? 'update' : 'import'
+          %>
         </div>
       </div>
     </div>
@@ -19,12 +19,12 @@
           <%= number_to_human(dataset.total) %>
         </h5>
         <div class="card-text">
-          <%= render 'alert', id: dataset.id, type: 'success' %>
-          <%= render 'alert', id: dataset.id, type: 'danger' %>
+          <%= render 'alert', name: dataset.name, type: 'success' %>
+          <%= render 'alert', name: dataset.name, type: 'danger' %>
           <p>
             With supporting text below as a natural lead-in to additional content.
           </p>
-          <%= render 'progress', id: dataset.id %>
+          <%= render 'progress', name: dataset.name %>
         </div>
       </div>
     <div class="card-footer">

@@ -9,8 +9,8 @@ module Admin
     def create
       respond_to do |format|
         format.json do
-          DatasetCreateJob.perform_later(params[:id])
-          render json: { name: params[:id], status: 'queued' }, status: :created
+          DatasetCreateJob.perform_later(params[:name])
+          render json: { name: params[:name], status: 'queued' }, status: :created
         end
       end
     end
@@ -18,8 +18,8 @@ module Admin
     def update
       respond_to do |format|
         format.json do
-          DatasetUpdateJob.perform_later(params[:id])
-          render json: { name: params[:id], status: 'queued' }, status: :ok
+          DatasetUpdateJob.perform_later(params[:name])
+          render json: { name: params[:name], status: 'queued' }, status: :ok
         end
       end
     end
