@@ -10,6 +10,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download name.basics.tsv.gz'
@@ -18,6 +19,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download title.akas.tsv.gz'
@@ -26,6 +28,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download title.crew.tsv.gz'
@@ -34,6 +37,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download title.episode.tsv.gz'
@@ -42,6 +46,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download title.principals.tsv.gz'
@@ -50,6 +55,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download title.ratings.tsv.gz'
@@ -58,6 +64,7 @@ namespace :import do
 
     downloader.call
     downloader.unzip
+    downloader.update_dataset
   end
 
   desc 'download all datasets'
