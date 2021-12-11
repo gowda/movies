@@ -50,10 +50,12 @@ class Downloader
   end
 
   def format_to_human_readable(number)
-    kb_formatted = (number.to_f / Numeric::KILOBYTE).round(2)
-    formatted = kb_formatted > 1024 ? (number.to_f / Numeric::MEGABYTE).round(2) : kb_formatted
-
-    "#{formatted.to_s.rjust(6, ' ')}#{kb_formatted == formatted ? 'KB' : 'MB'}"
+    ApplicationController.helpers.number_to_human_size(
+      number,
+      significant: false,
+      precision: 2,
+      strip_insignificant_zeros: false
+    )
   end
 
   def length
