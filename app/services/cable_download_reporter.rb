@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CableImportReporter
+class CableDownloadReporter
   attr_reader :id, :action
 
   def initialize(id, action)
@@ -19,11 +19,10 @@ class CableImportReporter
     {
       id: id,
       action: action,
-      phase: 'import',
+      phase: payload[:phase],
       event: payload[:event],
       completed: payload[:completed],
-      total: payload[:total],
-      message: payload[:message]
+      total: payload[:total]
     }
   end
 end

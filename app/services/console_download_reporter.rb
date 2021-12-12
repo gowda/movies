@@ -21,11 +21,11 @@ class ConsoleDownloadReporter
       printf "\rDownloading #{payload[:name]} to #{payload[:path]}"
     when 'progress'
       prefix = "Downloading #{payload[:name]}#{dots.next.ljust(5, ' ')}"
-      suffix = "#{human_readable(payload[:completed])}/#{human_readable(payload[:length])}"
+      suffix = "#{human_readable(payload[:completed])}/#{human_readable(payload[:total])}"
 
       printf "\r#{' ' * 106}\r#{prefix} #{suffix}"
     when 'complete'
-      printf "\r#{' ' * 106}\rDownloaded #{payload[:name]} (#{human_readable(payload[:length])})\n"
+      printf "\r#{' ' * 106}\rDownloaded #{payload[:name]} (#{human_readable(payload[:total])})\n"
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength

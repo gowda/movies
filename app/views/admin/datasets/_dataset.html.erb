@@ -5,18 +5,20 @@
         <div class="col-auto">
           <%= "#{dataset.display_name} (#{dataset.source})" %>
         </div>
-        <div class="col-auto">
-          <%= render 'action_button',
-                id: dataset.id,
-                name: dataset.name,
-                action: dataset.fetched? ? 'update' : 'import'
-          %>
-        </div>
+        <% if dataset.fetched? %>
+          <div class="col-auto">
+            <%= render 'action_button',
+                  id: dataset.id,
+                  name: dataset.name,
+                  action: 'update'
+            %>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class="card-body">
         <h5 class="card-title">
-          <%= number_to_human(dataset.total) %>
+          <%= dataset.fetched? ? number_to_human(dataset.total) : 'Nothing imported yet' %>
         </h5>
         <div class="card-text">
           <%= render 'alert', name: dataset.name, type: 'success' %>
@@ -24,7 +26,22 @@
           <p>
             With supporting text below as a natural lead-in to additional content.
           </p>
-          <%= render 'progress', name: dataset.name %>
+          <% unless dataset.fetched? %>
+            <div class="row">
+              <div class="col-auto">
+                <%= render 'action_button',
+                      id: dataset.id,
+                      name: dataset.name,
+                      action: 'import'
+                %>
+              </div>
+            </div>
+          <% end %>
+          <div class="dataset-progress" data-name="<%= dataset.name %>" style="display: none;">
+            <%= render 'download_progress', name: dataset.name %>
+            <%= render 'unzip_progress', name: dataset.name %>
+            <%= render 'import_progress', name: dataset.name %>
+          </div>
         </div>
       </div>
     <div class="card-footer">

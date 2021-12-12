@@ -1,22 +1,68 @@
-<div
-  class="row align-items-center dataset-progress"
-  data-name="<%= name %>"
-  style="display: none;"
->
-  <div class="col-10">
-    <div class="progress">
-      <div
-        class="progress-bar progress-bar-striped progress-bar-animated"
-        role="progressbar"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        style="width: 0%"
-      >
-      </div>
+<div data-phase="<%= phase %>">
+  <div class="row align-items-center intent">
+    <div class="col-auto">
+      <i class="bi-circle-fill text-muted" style="font-size: 2rem;"></i>
+    </div>
+    <div class="col">
+      <%= intent_message %>
     </div>
   </div>
-  <div class="col-2">
-    <span class="label">0%</span>
+  <div class="row align-items-center in-flight" style="display: none;">
+    <div class="col-auto">
+      <div class="spinner-border text-primary" role="status">
+      </div>
+    </div>
+    <% if phase == 'unzip' %>
+      <div class="col">
+        <%= progress_message %>
+      </div>
+    <% else %>
+      <div class="col flex-grow-1">
+        <div class="row">
+          <div class="col-12">
+            <div class="progress">
+              <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 0%"
+              >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <small class="text-muted label" style="font-family: monospace;">0%</small>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="row align-items-center skipped" style="display: none;">
+    <div class="col-auto">
+      <i class="bi-slash-circle-fill text-muted" style="font-size: 2rem;"></i>
+    </div>
+    <div class="col">
+      <%= skipped_message %>
+    </div>
+  </div>
+  <div class="row align-items-center completed" style="display: none;">
+    <div class="col-auto">
+      <i class="bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
+    </div>
+    <div class="col">
+      <%= completed_message %>
+    </div>
+  </div>
+  <div class="row align-items-center failed" style="display: none;">
+    <div class="col-auto">
+      <i class="bi-exclamation-circle-fill text-danger" style="font-size: 2rem;"></i>
+    </div>
+    <div class="col text-danger message">
+      <%= failed_message %>
+    </div>
   </div>
 </div>

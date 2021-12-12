@@ -27,7 +27,7 @@ module IMDbImporter
     end
 
     def process
-      IMDbDatasetParser.new(name, path).take(total).each_slice(SLICE_SIZE) do |rows|
+      IMDbDatasetParser.new(name, path).each_slice(SLICE_SIZE) do |rows|
         insert_rows!(rows)
 
         dataset.increment!(:completed, rows.length, touch: true)
@@ -74,7 +74,7 @@ module IMDbImporter
       return true if reporter.blank?
 
       reporter.call({
-        event: 'completion',
+        event: 'complete',
         message: completion_message,
         completed: completed,
         total: total

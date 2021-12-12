@@ -7,7 +7,7 @@ class ConsoleImportReporter
       printf "#{payload[:message]}\n"
     when 'progress'
       printf "\r#{payload[:message]}"
-    when 'completion'
+    when 'complete'
       printf "\r#{' ' * 80}\r#{payload[:message]}\n"
     end
   end

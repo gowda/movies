@@ -4,13 +4,18 @@ require 'downloader'
 
 class DatasetUpdateJob < ApplicationJob
   def perform(name)
-    reporter = create_reporter(name)
+    download_reporter = create_download_reporter(name)
+    Downloader.new(name, reporter: download_reporter).call
 
-    Downloader.new(name).call
-    IMDbImporter.import(name, reporter)
+    import_reporter = create_import_reporter(name)
+    IMDbImporter.import(name, import_reporter)
   end
 
-  def create_reporter(name)
+  def create_download_reporter(name)
+    CableDownloadReporter.new(name, 'update')
+  end
+
+  def create_import_reporter(name)
     CableImportReporter.new(name, 'update')
   end
 end

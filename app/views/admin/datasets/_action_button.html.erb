@@ -2,7 +2,7 @@
 
 <button
   type="button"
-  class="btn <%= "btn-#{btn_colors[action]}" %> btn-sm shadow-none dataset-update"
+  class="btn <%= "btn-#{btn_colors[action]}" %> btn-sm shadow-none dataset-<%= action %>"
   data-id="<%= id %>"
   data-name="<%= name %>"
 >
@@ -10,7 +10,7 @@
 </button>
 <button
   type="button"
-  class="btn <%= "btn-#{btn_colors[action]}" %> btn-sm shadow-none dataset-update-progress"
+  class="<%= "btn btn-#{btn_colors[action]} btn-sm shadow-none dataset-#{action}-progress" %>"
   data-id="<%= id %>"
   data-name="<%= name %>"
   disabled

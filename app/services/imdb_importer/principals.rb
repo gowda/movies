@@ -33,6 +33,11 @@ module IMDbImporter
     def remove_indices
       ActiveRecord::Base.connection.remove_index :principals, :title_imdb_id
       ActiveRecord::Base.connection.remove_index :principals, :artist_imdb_id
+    rescue ArgumentError => e
+      raise e unless e.message == 'No indexes found on principals with the options provided.'
+
+      reporter.call({ event: 'failed', message: 'Failed to prepare database table for import' })
+      raise e
     end
 
     def add_indices
