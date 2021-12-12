@@ -9,6 +9,7 @@ AllCops:
     - vendor/**/*
     - tmp/**/*
     - db/**/*.rb
+    - node_modules/**/*
 Layout/LineLength:
   IgnoredPatterns: ['\A\s*#']
 Style/Documentation:

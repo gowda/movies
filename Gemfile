@@ -18,6 +18,10 @@ gem 'railties', RAILS_VERSION
 gem 'sprockets-rails', '>= 2.0.0'
 gem 'bundler', '>= 1.15.0'
 
+gem 'webpacker',
+  git: 'https://github.com/rails/webpacker.git',
+  ref: 'ce7cdd707f79065d975c2005d14ec821df30e3b1'
+
 gem 'faraday', '~> 1.8.0'
 
 gem 'bootstrap', '~> 5.1.3'
