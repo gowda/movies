@@ -35,4 +35,11 @@ class Title < ApplicationRecord
   has_many :principal_producers, -> { where(category: 'producer') }, PRINCIPALS_OPTIONS
   has_many :producers, through: :principal_producers, source: :artist
   # rubocop:enable Rails/HasManyOrHasOneDependent, Rails/InverseOf
+
+  has_one :rating,
+    class_name: 'IMDbRating',
+    dependent: nil,
+    foreign_key: :title_imdb_id,
+    primary_key: :imdb_id,
+    inverse_of: :title
 end
