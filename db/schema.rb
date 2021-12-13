@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_11_105717) do
+ActiveRecord::Schema.define(version: 2021_12_13_080030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,21 @@ ActiveRecord::Schema.define(version: 2021_12_11_105717) do
     t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["imdb_id"], name: "index_titles_on_imdb_id", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "access_token"
+    t.string "refresh_token"
+    t.string "name"
+    t.string "given_name"
+    t.string "family_name"
+    t.string "google_id"
+    t.string "profile_picture_uri"
+    t.string "locale"
+    t.boolean "verified_email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "writings", force: :cascade do |t|
