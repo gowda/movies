@@ -35,3 +35,5 @@ yarn-debug.log*
 # dotenv
 .env.development
 .env.test
+
+*client_secret*.json
