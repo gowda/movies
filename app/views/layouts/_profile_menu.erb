@@ -1,0 +1,29 @@
+<div class="dropdown">
+  <a
+    class="nav-link dropdown-toggle"
+    href="#"
+    id="profile-link"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <img
+      src="<%= current_user.profile_picture_uri %>"
+      class="img-thumbnail mx-auto rounded-circle"
+      style="padding: 0; width: 2.5rem;"
+      alt="..."
+    >
+      <%= current_user.name %>
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="profile-link" style="right: 0;">
+    <li>
+      <a class="dropdown-item" href="#">Profile</a>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li>
+      <%= render 'layouts/signout_button' %>
+    </li>
+  </ul>
+</div>
