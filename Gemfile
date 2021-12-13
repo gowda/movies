@@ -35,6 +35,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'googleauth'
 gem 'google-apis-oauth2_v2'
 
+gem 'kaminari'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'

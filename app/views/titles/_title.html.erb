@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card ms-auto me-auto mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/1/16/Ulidavaru_Kandanthe_poster.jpg"
+            class="img-fluid rounded-start"
+            alt="..."
+          >
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= title.name %>
+            </h5>
+            <div class="row align-items-center">
+              <div class="col-auto pe-1">
+                <span class="text-muted">
+                  <%= [title.start_year, title.end_year].compact.join('-') %>
+                </span>
+              </div>
+              <div class="col-auto ps-1 pe-1" style="border-left: 1px grey solid">
+                <span class="text-muted">
+                  <%= title.runtime_minutes %>
+                </span>
+              </div>
+              <div class="col-auto ps-1 pe-1" style="border-left: 1px grey solid">
+                <span class="text-muted">
+                  <%= title.genres %>
+                </span>
+              </div>
+            </div>
+            <div class="row align-items-center mt-1">
+              <div class="col-auto pe-1">
+                <%= image_tag 'imdb', width: 48 %>
+              </div>
+              <div class="col-auto ps-1">
+                <strong>
+                  <%= sprintf('%g', title.rating.average_rating) %>/10
+                </strong>
+              </div>
+            </div>
+            <div class="card-text">
+              <%= render 'directors', directors: title.directors %>
+              <%= render 'producers', producers: title.producers %>
+              <%= render 'actors', actors: title.actors %>
+            </div>
+            <p class="card-text">
+              This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+            </p>
+            <p class="card-text">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

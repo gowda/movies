@@ -1,0 +1,12 @@
+<% if producers.present? %>
+  <div class="row">
+    <div class="col-auto pe-1">
+      <strong>Produced by</strong>
+    </div>
+    <div class="col-auto ps-1">
+      <span class="text-muted">
+        <%= producers.map(&:name).join(', ') %>
+      </span>
+    </div>
+  </div>
+<% end %>
