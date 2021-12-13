@@ -32,8 +32,12 @@ gem 'puma', '~> 5.0'
 gem 'sass-rails', '>= 6'
 gem 'jbuilder', '~> 2.7'
 
+gem 'googleauth'
+gem 'google-apis-oauth2_v2'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
   gem 'rubocop', '~> 1.23.0', require: false
   gem 'rubocop-rails', require: false
 end
