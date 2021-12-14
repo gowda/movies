@@ -62,7 +62,9 @@ class TitlesQuery
   # rubocop:enable Metrics/MethodLength
 
   def base_query
-    Title.includes(:rating, :producers, :directors, :actors).order('imdb_rating DESC NULLS LAST')
+    Title.includes(:rating, :producers, :directors, :actors)
+         .order('imdb_num_votes DESC NULLS LAST')
+         .order('imdb_rating DESC NULLS LAST')
   end
 
   def filter?(label)
