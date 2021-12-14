@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_052438) do
+ActiveRecord::Schema.define(version: 2021_12_14_110353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,18 @@ ActiveRecord::Schema.define(version: 2021_12_14_052438) do
     t.index ["title_imdb_id"], name: "index_title_episodes_on_title_imdb_id"
   end
 
+  create_table "title_wikidata", id: :string, force: :cascade do |t|
+    t.string "uri"
+    t.string "imdb_id"
+    t.string "commons_picture_uri"
+    t.string "wikipedia_uri"
+    t.string "name"
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["id"], name: "index_title_wikidata_on_id", unique: true
+    t.index ["imdb_id"], name: "index_title_wikidata_on_imdb_id", unique: true
+  end
+
   create_table "titles", force: :cascade do |t|
     t.string "imdb_id"
     t.string "category"
@@ -147,6 +159,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_052438) do
   add_foreign_key "principals", "titles", column: "title_imdb_id", primary_key: "imdb_id"
   add_foreign_key "title_episodes", "titles", column: "episode_imdb_id", primary_key: "imdb_id"
   add_foreign_key "title_episodes", "titles", column: "title_imdb_id", primary_key: "imdb_id"
+  add_foreign_key "title_wikidata", "titles", column: "imdb_id", primary_key: "imdb_id"
   add_foreign_key "writings", "artists", column: "writer_imdb_id", primary_key: "imdb_id"
   add_foreign_key "writings", "titles", column: "title_imdb_id", primary_key: "imdb_id"
 end

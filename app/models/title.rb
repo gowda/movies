@@ -42,4 +42,11 @@ class Title < ApplicationRecord
     foreign_key: :title_imdb_id,
     primary_key: :imdb_id,
     inverse_of: :title
+
+  has_one :wikidata,
+    class_name: 'TitleWikidatum',
+    dependent: nil,
+    foreign_key: :imdb_id,
+    primary_key: :imdb_id,
+    inverse_of: :title
 end
