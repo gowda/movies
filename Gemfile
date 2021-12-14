@@ -37,6 +37,8 @@ gem 'google-apis-oauth2_v2'
 
 gem 'kaminari'
 
+gem 'sparql'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
