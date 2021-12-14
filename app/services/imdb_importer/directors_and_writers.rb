@@ -58,7 +58,7 @@ module IMDbImporter
     def update_count_counters_query_for(key, table)
       <<~SQL
         INSERT INTO titles (imdb_id, #{key}_count)
-          (select title_imdb_id as imdb_id, count(id) as #{key}_count from #{table} group by title_imdb_id)
+          (select title_imdb_id, count(id) from #{table} group by title_imdb_id)
           ON CONFLICT(imdb_id) DO UPDATE SET #{key}_count = EXCLUDED.#{key}_count;
       SQL
     end
