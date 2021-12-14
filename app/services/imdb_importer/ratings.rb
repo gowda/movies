@@ -43,15 +43,17 @@ module IMDbImporter
 
     def copy_rating_to_titles
       ActiveRecord::Base.connection.remove_index :titles, :imdb_rating
+      ActiveRecord::Base.connection.remove_index :titles, :imdb_num_votes
       ActiveRecord::Base.connection.execute(copy_rating_to_titles_query)
+      ActiveRecord::Base.connection.add_index :titles, :imdb_num_votes, if_not_exists: true
       ActiveRecord::Base.connection.add_index :titles, :imdb_rating, if_not_exists: true
     end
 
     def copy_rating_to_titles_query
       <<~SQL
-        INSERT INTO titles (imdb_id, imdb_rating)
-          (select title_imdb_id, average_rating from imdb_ratings)
-          ON CONFLICT(imdb_id) DO UPDATE SET imdb_rating = EXCLUDED.imdb_rating;
+        INSERT INTO titles (imdb_id, imdb_rating, imdb_num_votes)
+          (select title_imdb_id, average_rating, num_votes from imdb_ratings)
+          ON CONFLICT(imdb_id) DO UPDATE SET (imdb_rating, imdb_num_votes) = (EXCLUDED.imdb_rating, EXCLUDED.imdb_num_votes);
       SQL
     end
   end
