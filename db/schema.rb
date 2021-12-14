@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_13_131822) do
+ActiveRecord::Schema.define(version: 2021_12_13_192319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,8 @@ ActiveRecord::Schema.define(version: 2021_12_13_131822) do
     t.string "genres"
     t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "director_count"
+    t.integer "writer_count"
     t.index ["imdb_id"], name: "index_titles_on_imdb_id", unique: true
   end
 

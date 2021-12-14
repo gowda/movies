@@ -26,6 +26,7 @@ module IMDbImporter
 
     def post_process
       add_indices
+      update_counters
       super
     end
 
@@ -39,6 +40,27 @@ module IMDbImporter
     def remove_indices
       remove_directings_indices
       remove_writings_indices
+    end
+
+    def update_counters
+      ActiveRecord::Base.connection.execute(update_director_count_counters_query)
+      ActiveRecord::Base.connection.execute(update_writer_count_counters_query)
+    end
+
+    def update_director_count_counters_query
+      update_count_counters_query_for('director', 'directings')
+    end
+
+    def update_writer_count_counters_query
+      update_count_counters_query_for('writer', 'writings')
+    end
+
+    def update_count_counters_query_for(key, table)
+      <<~SQL
+        INSERT INTO titles (imdb_id, #{key}_count)
+          (select title_imdb_id as imdb_id, count(id) as #{key}_count from #{table} group by title_imdb_id)
+          ON CONFLICT(imdb_id) DO UPDATE SET #{key}_count = EXCLUDED.#{key}_count;
+      SQL
     end
 
     def add_directings_indices
