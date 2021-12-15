@@ -32,7 +32,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: imdb_test
+  database: <%= ENV.fetch('DB_NAME') %>
   username: <%= ENV.fetch('DB_USERNAME') %>
   password: <%= ENV.fetch('DB_PASSWORD') %>
 
