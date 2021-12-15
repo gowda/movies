@@ -33,6 +33,7 @@ development:
 test:
   <<: *default
   database: imdb_test
+  username: testuser
   password: <%= ENV.fetch('DB_PASSWORD') %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
