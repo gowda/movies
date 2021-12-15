@@ -46,7 +46,7 @@ class TitlesQuery
   def filtered_query
     case filter
     when 'movies'
-      base_query.where(category: 'movies')
+      base_query.where(category: 'movie')
     when 'tv-series'
       base_query.where(category: %w[tvSeries tvMiniSeries])
     when 'single-director'
@@ -54,7 +54,7 @@ class TitlesQuery
     when '2-directors'
       base_query.where(director_count: 2)
     when 'n-directors'
-      base_query.where('director_count >' => 2)
+      base_query.where('director_count > ?', 2)
     else
       base_query
     end
