@@ -63,8 +63,10 @@ class TitlesQuery
 
   def base_query
     Title.includes(:rating, :producers, :directors, :actors)
-         .order('imdb_num_votes DESC NULLS LAST')
-         .order('imdb_rating DESC NULLS LAST')
+         .where('imdb_num_votes IS NOT NULL')
+         .where('imdb_rating IS NOT NULL')
+         .order('imdb_num_votes DESC')
+         .order('imdb_rating DESC')
   end
 
   def filter?(label)
