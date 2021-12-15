@@ -32,18 +32,18 @@ gem 'puma', '~> 5.0'
 gem 'sass-rails', '>= 6'
 gem 'jbuilder', '~> 2.7'
 
-gem 'googleauth'
-gem 'google-apis-oauth2_v2'
+gem 'googleauth', '~> 1.1.0'
+gem 'google-apis-oauth2_v2', '~> 0.6.0'
 
-gem 'kaminari'
+gem 'kaminari', '~> 1.2.0'
 
-gem 'sparql'
+gem 'sparql', '~> 3.1.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'dotenv-rails'
+  gem 'dotenv-rails', '~> 2.7.0'
   gem 'rubocop', '~> 1.23.0', require: false
-  gem 'rubocop-rails', require: false
+  gem 'rubocop-rails', '~> 2.12.0', require: false
 end
 
 group :development do
