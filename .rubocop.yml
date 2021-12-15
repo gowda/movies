@@ -27,3 +27,5 @@ Metrics/BlockLength:
     - lib/tasks/**/*.rake
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
+Style/SymbolArray:
+  Enabled: false

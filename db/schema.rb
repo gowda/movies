@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_142357) do
+ActiveRecord::Schema.define(version: 2021_12_14_145244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,7 +125,10 @@ ActiveRecord::Schema.define(version: 2021_12_14_142357) do
     t.float "imdb_rating"
     t.integer "imdb_num_votes"
     t.index ["imdb_id"], name: "index_titles_on_imdb_id", unique: true
+    t.index ["imdb_num_votes", "imdb_rating"], name: "index_titles_on_imdb_num_votes_and_imdb_rating"
     t.index ["imdb_num_votes"], name: "index_titles_on_imdb_num_votes"
+    t.index ["imdb_rating", "imdb_num_votes"], name: "index_titles_on_imdb_rating_and_imdb_num_votes"
+    t.index ["imdb_rating"], name: "index_titles_on_imdb_rating"
   end
 
   create_table "users", force: :cascade do |t|

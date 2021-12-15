@@ -42,11 +42,23 @@ module IMDbImporter
     end
 
     def copy_rating_to_titles
+      remove_index_to_titles
+      ActiveRecord::Base.connection.execute(copy_rating_to_titles_query)
+      add_index_to_titles
+    end
+
+    def remove_index_to_titles
       ActiveRecord::Base.connection.remove_index :titles, :imdb_rating
       ActiveRecord::Base.connection.remove_index :titles, :imdb_num_votes
-      ActiveRecord::Base.connection.execute(copy_rating_to_titles_query)
+      ActiveRecord::Base.connection.remove_index :titles, [:imdb_rating, :imdb_num_votes]
+      ActiveRecord::Base.connection.remove_index :titles, [:imdb_num_votes, :imdb_rating]
+    end
+
+    def add_index_to_titles
       ActiveRecord::Base.connection.add_index :titles, :imdb_num_votes, if_not_exists: true
       ActiveRecord::Base.connection.add_index :titles, :imdb_rating, if_not_exists: true
+      ActiveRecord::Base.connection.add_index :titles, [:imdb_rating, :imdb_num_votes], if_not_exists: true
+      ActiveRecord::Base.connection.add_index :titles, [:imdb_num_votes, :imdb_rating], if_not_exists: true
     end
 
     def copy_rating_to_titles_query
