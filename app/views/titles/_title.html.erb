@@ -22,7 +22,7 @@
               </div>
               <div class="col-auto ps-1 pe-1" style="border-left: 1px grey solid">
                 <span class="text-muted">
-                  <%= title.runtime_minutes %>
+                  <%= ["#{title.runtime_minutes / 60}h", "#{title.runtime_minutes % 60}mins"].reject { |i| i.start_with?('0') }.join(' ') %>
                 </span>
               </div>
               <div class="col-auto ps-1 pe-1" style="border-left: 1px grey solid">
