@@ -1,8 +1,8 @@
-# imdb
+# movies
 ![](https://github.com/gowda/imdb/workflows/lint/badge.svg)
 ![](https://github.com/gowda/imdb/workflows/test/badge.svg)
 
-Clone of imdb exported dataset from [IMDb Datasets](https://www.imdb.com/interfaces/)
+Movie database built around initial data from imdb exported dataset from [IMDb Datasets](https://www.imdb.com/interfaces/) & lot more from wikipedia.
 
 ## Initialize database
 ```bash
