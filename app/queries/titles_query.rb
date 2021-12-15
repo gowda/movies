@@ -62,7 +62,7 @@ class TitlesQuery
   # rubocop:enable Metrics/MethodLength
 
   def base_query
-    Title.includes(:rating, :producers, :directors, :actors)
+    Title.includes(:rating, :producers, :directors, :actors, :wikidata)
          .where('imdb_num_votes IS NOT NULL')
          .where('imdb_rating IS NOT NULL')
          .order('imdb_num_votes DESC')

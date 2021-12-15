@@ -7,7 +7,11 @@ class TitlePresenter
     @title = title
   end
 
-  delegate :name, :genres, :imdb_rating, to: :title
+  delegate :name, :genres, :imdb_rating, :imdb_num_votes, to: :title
+
+  def poster_uri
+    commons_picture_uri.presence || default_picture_uri
+  end
 
   def runtime
     return 'N/A' if title.runtime_minutes.blank?
@@ -37,6 +41,14 @@ class TitlePresenter
   end
 
   private
+
+  def commons_picture_uri
+    @commons_picture_uri ||= title.wikidata&.commons_picture_uri
+  end
+
+  def default_picture_uri
+    'https://upload.wikimedia.org/wikipedia/en/1/16/Ulidavaru_Kandanthe_poster.jpg'
+  end
 
   def director_names
     title.directors.map(&:name)
