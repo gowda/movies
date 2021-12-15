@@ -11,6 +11,8 @@ on:
 jobs:
   rubocop:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_CLIENT_CONFIG: ''
     services:
       postgres:
         image: postgres
