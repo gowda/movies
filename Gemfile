@@ -44,6 +44,7 @@ group :development, :test do
   gem 'dotenv-rails', '~> 2.7.0'
   gem 'rubocop', '~> 1.23.0', require: false
   gem 'rubocop-rails', '~> 2.12.0', require: false
+  gem 'rubocop-rspec', '~> 2.6.0', require: false
 end
 
 group :development do
@@ -51,4 +52,8 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   gem 'spring'
+end
+
+group :test do
+  gem 'rspec-rails', '~> 5.0.0'
 end
