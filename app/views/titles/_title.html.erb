@@ -1,3 +1,5 @@
+<% title = TitlePresenter.new(obj) %>
+
 <div class="row justify-content-center">
   <div class="col">
     <div class="card ms-auto me-auto mb-3" style="max-width: 1040px;">
@@ -17,12 +19,12 @@
             <div class="row align-items-center">
               <div class="col-auto pe-1">
                 <span class="text-muted">
-                  <%= [title.start_year, title.end_year].compact.join('-') %>
+                  <%= title.release_year %>
                 </span>
               </div>
               <div class="col-auto ps-1 pe-1" style="border-left: 1px grey solid">
                 <span class="text-muted">
-                  <%= ["#{title.runtime_minutes / 60}h", "#{title.runtime_minutes % 60}mins"].reject { |i| i.start_with?('0') }.join(' ') %>
+                  <%= title.runtime %>
                 </span>
               </div>
               <div class="col-auto ps-1 pe-1" style="border-left: 1px grey solid">
@@ -37,7 +39,7 @@
               </div>
               <div class="col-auto ps-1">
                 <strong>
-                  <%= sprintf('%g', title.rating.average_rating) %>/10
+                  <%= sprintf('%g', title.imdb_rating) %>/10
                 </strong>
               </div>
             </div>
@@ -46,12 +48,6 @@
               <%= render 'producers', producers: title.producers %>
               <%= render 'actors', actors: title.actors %>
             </div>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-            </p>
-            <p class="card-text">
-              <small class="text-muted">Last updated 3 mins ago</small>
-            </p>
           </div>
         </div>
       </div>

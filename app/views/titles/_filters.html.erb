@@ -1,10 +1,10 @@
 <div class="row justify-content-center mt-2 mb-4">
-  <% COLORS = Hash.new('secondary').merge({ params[:filter] => 'primary' }) %>
+  <% colors = Hash.new('secondary').merge({ params[:filter] => 'primary' }) %>
   <% TitlesQuery::FILTERS.each do |filter| %>
     <div class="col-auto">
       <a
         href="<%= titles_path(filter: filter[:name]) %>"
-        class="btn btn-<%= COLORS[:filter] %> shadow-none"
+        class="btn btn-<%= colors[:filter] %> shadow-none"
       >
         <%= filter[:label] %>
       </a>
