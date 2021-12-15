@@ -17,6 +17,7 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
@@ -46,8 +47,10 @@ jobs:
       - name: Database migration
         run: bin/rails db:migrate
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres
       - name: RSpec
         run: bin/rspec
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres
