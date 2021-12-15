@@ -10,6 +10,7 @@ class TitlePresenter
   delegate :name, :genres, :imdb_rating, to: :title
 
   def runtime
+    return 'N/A' if title.runtime_minutes.blank?
     return "#{runtime_minutes}mins" if runtime_hours.zero?
     return "#{runtime_hours}h" if runtime_minutes.zero?
 
