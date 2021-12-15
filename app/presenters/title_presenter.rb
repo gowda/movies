@@ -21,7 +21,10 @@ class TitlePresenter
   end
 
   def directors
-    title.directors.map(&:name).join(', ')
+    return director_names.first if director_names.length < 2
+    return director_names.join(' and ') if director_names.length == 2
+
+    "#{director_names.take(2).join(', ')} and others"
   end
 
   def actors
@@ -33,6 +36,10 @@ class TitlePresenter
   end
 
   private
+
+  def director_names
+    title.directors.map(&:name)
+  end
 
   def runtime_hours
     @runtime_hours ||= title.runtime_minutes / 60
