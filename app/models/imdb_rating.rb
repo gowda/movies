@@ -8,6 +8,6 @@ class IMDbRating < ApplicationRecord
   private
 
   def update_parent_rating
-    title.update!(imdb_rating: average_rating)
+    title.update!(imdb_rating: average_rating, imdb_num_votes: num_votes)
   end
 end
