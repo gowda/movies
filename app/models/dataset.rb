@@ -3,8 +3,6 @@
 class Dataset < ApplicationRecord
   validates :name, presence: true, allow_blank: false
 
-  after_save :notify_progress, unless: -> { completed.zero? && total.zero? }
-
   def path
     Rails.root.join("tmp/#{filename}")
   end
@@ -24,10 +22,5 @@ class Dataset < ApplicationRecord
 
   def imdb_url
     "https://datasets.imdbws.com/#{zip_filename}"
-  end
-
-  private
-
-  def notify_progress
   end
 end
